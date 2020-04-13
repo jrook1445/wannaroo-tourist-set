@@ -4,17 +4,17 @@ NewGRF for OpenTTD - Tourist industries
 
 1. About
 
-2. Compatibility
+1. Compatibility
 
-3. Features
+1. Features
 
-4. Development
+1. Development
 
-5. License
+1. License
 
 GPL v2
 
-6. Credits
+1. Credits
 
 Author of this newgrf: jrook1445 (https://github.com/jrook1445)
 
