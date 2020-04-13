@@ -1,0 +1,121 @@
+##grflangid 0x00
+##plural 0
+
+STR_GRF_NAME                            :Wannaroo Tourist Set
+STR_GRF_DESCRIPTION                     :{}Wannaroo Tourist Set provides 3 tourist industries for OpenTTD.{}{}Cargos added:{}Tourists (TOUR, 31)
+STR_GRF_URL                             :https://github.com/jrook1445/wannaroo-tourist-set
+
+#Error strings
+
+STR_ERR_NO_TOYLAND                      :{STRING} is not designed to work with toyland climate.
+
+#Industry strings
+
+STR_HOTEL_NAME							    :Hotel
+STR_TOWER_NAME							    :Visitor Center
+STR_PAVILION_NAME						    :Pavilion
+STR_LODGE_NAME							    :Lodge
+STR_LIGHTHOUSE_NAME						    :Lighthouse
+STR_RUINS_NAME							    :Ruins
+STR_PYRAMID_NAME						    :Pyramid
+STR_MONUMENT_NAME						    :Monument
+STR_TOWN_SQUARE_NAME					    :Town Square
+
+#Station names
+
+STR_HOTEL_STATION_NAME						:{STRING} Hotel
+STR_TOWER_STATION_NAME						:{STRING} Visitor Center
+STR_TOWER_STATION_NAME_2					:{STRING} Happening
+STR_TOWER_STATION_NAME_3					:{STRING} Attraction
+STR_TOWER_STATION_NAME_4					:{STRING} Event Center
+STR_PAVILION_STATION_NAME					:{STRING} Pavilion
+STR_LODGE_STATION_NAME						:{STRING} Lodge
+STR_LIGHTHOUSE_STATION_NAME					:{STRING} Lighthouse
+STR_RUINS_STATION_NAME						:{STRING} Ruins
+STR_PYRAMID_STATION_NAME					:{STRING} Pyramid
+STR_MONUMENT_STATION_NAME					:{STRING} Monument
+STR_TOWN_SQUARE_STATION_NAME				:{STRING} Square
+
+#Industry debug text
+
+#STR_INDUSTRY_TOURIST_DEBUG_TEXT					:{TINYFONT}produced_this_month: {COMMA}{}produced_last_month: {COMMA}{}{}current production rate: {COMMA}{}max production rate: {COMMA}{}{}received this month: {COMMA}{}{}closure counter: {COMMA}
+STR_INDUSTRY_TOURIST_DEBUG_TEXT					:{TINYFONT}produced_this_month: {COMMA}{}{}production_level: {COMMA}{}{}current production rate: {COMMA}{}max production rate: {COMMA}{}{}received this month: {COMMA}{}{}closure counter: {COMMA}
+
+#Industry extra text
+
+#Validation messages
+
+STR_TOWN_BELOW_2000						    :Town is too small (below 2000 population) for building this industry.
+STR_INDUSTRY_TOO_CLOSE						:Too close to another similar industry, minimum distance is 50 tiles.
+STR_TOWN_INDUSTRY_TOO_CLOSE					:Too close to another similar industry, minimum distance is 20 tiles.
+STR_INDUSTRY_TOO_CLOSE_TO_TOWN				:Industry should be located away from the town center, minimum distance is 20 tiles.
+STR_ONE_INDUSTRY_PER_TOWN					:Only one industry of this type allowed per town.
+STR_HOTEL_WATER_CHECK_FAILED				:Hotel must be within 6 tiles of water.
+STR_TOWER_WATER_CHECK_FAILED				:Visitor Center must be within 12 tiles of water.
+STR_TILE_IND_CHECK_FAILED					:Too close to another industry.
+STR_TILE_FLAT_CHECK_FAILED					:Can only build industry on flat land.
+
+#Parameters
+
+STR_PARAM_NAME_ENABLE_HOTEL					:Hotel
+STR_PARAM_DESC_ENABLE_HOTEL					:The hotel accepts food and alcohol. It also produces and accepts tourists.
+
+STR_PARAM_NAME_ENABLE_TOWER					:Visitor Center
+STR_PARAM_DESC_ENABLE_TOWER					:The visitor center produces and accepts tourists.
+
+STR_PARAM_NAME_ENABLE_TOWN_SQUARE			:Town Square
+STR_PARAM_DESC_ENABLE_TOWN_SQUARE			:The town square produces and accepts tourists, and also accepts goods and alcohol.
+
+STR_PARAM_NAME_ENABLE_HOUSES                :Houses
+STR_PARAM_DESC_ENABLE_HOUSES                :fill this in later
+
+STR_PARAM_NAME_MANUAL_PLACEMENT				:Manual placement
+STR_PARAM_DESC_MANUAL_PLACEMENT				:Off (default): industries are placed on map generation and can appear in game. On: industries must be manually placed.
+
+STR_PARAM_NAME_MAX_TOUR_PROD				:Max Tourist Production
+STR_PARAM_DESC_MAX_TOUR_PROD				:Maximum tourist production per month: default 160, max 512, min 32
+
+STR_PARAM_NAME_CLOSURE_PROTECTION_TIME		:Closure protection period
+STR_PARAM_DESC_CLOSURE_PROTECTION_TIME		:Industries will be protected from closure for this many months: default 60, max 600, min 0. A value of 0 will disable industry closure.
+
+STR_PARAM_NAME_ENABLE_DEBUG_TEXT			:Debug Text
+STR_PARAM_DESC_ENABLE_DEBUG_TEXT			:Show debug text in the industry windows.
+
+STR_PARAM_NAME_DEFINE_INDUSTRY_BASECOSTS	:Industry base costs defined by this NewGRF
+STR_PARAM_DESC_DEFINE_INDUSTRY_BASECOSTS	:Off (default) if another NewGRF is defining industry base costs.{}On if this NewGRF will define them.{}{}Base costs defined: PR_BUILD_INDUSTRY, PR_BUILD_INDUSTRY_RAW, PR_CLEAR_INDUSTRY
+
+STR_PARAM_NAME_DEFINE_TRAIN_BASECOSTS		:Train base costs defined by this NewGRF
+STR_PARAM_DESC_DEFINE_TRAIN_BASECOSTS		:Off (default) if another NewGRF is defining train base costs.{}On if this NewGRF will define them.{}{}Base costs defined: PR_BUILD_VEHICLE_TRAIN, PR_BUILD_VEHICLE_WAGON, PR_RUNNING_TRAIN_STEAM, PR_RUNNING_TRAIN_DIESEL, PR_RUNNING_TRAIN_ELECTRIC
+
+STR_PARAM_NAME_DEFINE_RV_BASECOSTS			:Road vehicle base costs defined by this NewGRF
+STR_PARAM_DESC_DEFINE_RV_BASECOSTS			:Off (default) if another NewGRF is defining road vehicle base costs.{}On if this NewGRF will define them.{}{}Base costs defined: PR_BUILD_VEHICLE_ROAD, PR_RUNNING_ROADVEH
+
+STR_PARAM_NAME_INDUSTRY_BASECOSTS			:Industry base costs
+STR_PARAM_NAME_TRAIN_BASECOSTS				:Train base costs
+STR_PARAM_NAME_RV_BASECOSTS					:Road vehicle base costs
+STR_PARAM_DESC_BASECOSTS					:Normal or reduced base costs (default = normal).
+
+STR_PARAM_NORMAL						    :Normal
+STR_PARAM_HALF							    :1/2
+STR_PARAM_QUARTER		    				:1/4
+STR_PARAM_EIGHTH			    			:1/8
+STR_PARAM_SIXTEENTH			    			:1/16
+STR_PARAM_MINIMAL			    			:Minimal (1/32)
+STR_PARAM_NONE				    			:None
+
+#Building Names
+
+STR_HOUSE_NAME_CABIN                        :Rustic House
+STR_HOUSE_NAME_REGULAR_HOUSE                :Regular House
+STR_HOUSE_NAME_TOWER_BLOCK                  :Tower Block
+STR_HOUSE_NAME_FLATS                        :Flats
+
+#Cargo
+
+STR_CARGO_NAME_TOURIST						:Tourists
+STR_CID_TOURIST				    			:{TINYFONT}TR
+STR_CARGO_UNIT_TOURIST						:{COMMA} tourist{P 0 "" s}
+
+#string strings
+STR_EMPTY_STRING			    			:
+
