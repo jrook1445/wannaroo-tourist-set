@@ -2,7 +2,7 @@
 ##plural 0
 
 STR_GRF_NAME                            :Wannaroo Tourist Set
-STR_GRF_DESCRIPTION                     :{}Wannaroo Tourist Set provides 3 tourist industries for OpenTTD.{}{}Cargos added:{}Tourists (TOUR, 31)
+STR_GRF_DESCRIPTION                     :{}Wannaroo Tourist Set provides 3 tourist industries for OpenTTD.{}{}Cargos added:{}Tourists (TOUR, 31){}{}License: GPL v2
 STR_GRF_URL                             :https://github.com/jrook1445/wannaroo-tourist-set
 
 #Error strings
