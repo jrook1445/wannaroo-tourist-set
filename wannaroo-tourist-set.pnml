@@ -1,0 +1,21 @@
+/* wannaroo-tourist-set.pnml */
+
+/*
+    License: GPL v2
+    https://github.com/jrook1445/wannaroo-tourist-set
+*/
+
+#include "src/header.pnml"
+#include "src/defcommon.pnml"
+#include "src/enable_conditions.pnml"
+#include "src/cargo_definition.pnml"
+#include "src/callbacks_production.pnml"
+#include "src/tile_industry_check.pnml"
+#include "src/tiles/hotel_tiles.pnml"
+#include "src/hotel.pnml"
+#include "src/tiles/tower_tiles.pnml"
+#include "src/tower.pnml"
+#include "src/tiles/town_square_tiles.pnml"
+#include "src/town_square.pnml"
+#include "src/houses.pnml"
+
