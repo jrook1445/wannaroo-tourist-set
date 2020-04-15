@@ -1,0 +1,85 @@
+/* defcommon.pnml */
+
+/*
+    License: GPL v2
+    https://github.com/jrook1445/wannaroo-tourist-set
+*/
+
+// @TODO:
+// 1. add max number of industries (not yet implemented @ 20200415)
+
+#define IND_HOTEL		0x00
+#define IND_TOWER		0x01 // Visitor Center
+#define IND_TOWN_SQUARE		0x02
+
+/* INDUSTRY TILE IDs
+
+   HOTEL            0-3
+   TOWER            4
+   TOWN_SQUARE      5-8
+
+*/
+
+// max number of industries of a given type is proportional to map size, 256x256 = 4 (maps < 256x256 will have max 3 each type)
+// affects: hotel, tower, town square
+// max number tested in location_checks.pnml
+max_industries = max((map_size / (256 * 256)) * 4, 3);
+
+switch (FEAT_INDUSTRIES, SELF, tourist_initial_prod_rate, 1) {
+	1: return [STORE_PERM(abs(extra_callback_info2%5)+4, 0x02), 16];
+}
+
+// remove cargo_subtype_display text from industry windows
+// text is put there because we have a produce block
+switch (FEAT_INDUSTRIES, SELF, industry_remove_cargo_text, getbits(extra_callback_info2, 0, 8)) {
+	0: return 0x3800 + string(STR_EMPTY_STRING);
+	1: return 0x3800 + string(STR_EMPTY_STRING);
+	2: return 0x3800 + string(STR_EMPTY_STRING);
+}
+
+//switch (FEAT_INDUSTRIES, SELF, tourist_debug_text, [STORE_TEMP(produced_this_month_1, 256), STORE_TEMP(produced_last_month_1, 257), STORE_TEMP(LOAD_PERM(0x02), 258), STORE_TEMP(param_max_tour_prod/8, 259), STORE_TEMP(LOAD_PERM(0x06), 260), STORE_TEMP(LOAD_PERM(0x00), 261), param_enable_debug_text]) {
+switch (FEAT_INDUSTRIES, SELF, tourist_debug_text, [STORE_TEMP(produced_this_month_1, 256), STORE_TEMP(production_level, 257), STORE_TEMP(LOAD_PERM(0x02), 258), STORE_TEMP(param_max_tour_prod/8, 259), STORE_TEMP(LOAD_PERM(0x06), 260), STORE_TEMP(LOAD_PERM(0x00), 261), param_enable_debug_text]) {
+	1: return string(STR_INDUSTRY_TOURIST_DEBUG_TEXT);
+	return CB_RESULT_NO_TEXT;
+}
+
+switch (FEAT_INDUSTRIES, PARENT, town_below_2000, population) {
+	0..1999: return string(STR_TOWN_BELOW_2000);
+	return CB_RESULT_LOCATION_ALLOW;
+}
+
+// called in tile_industry_check
+// the final tile check, only a negative result returned, no onward chain
+// further checks are done by the industry
+switch (FEAT_INDUSTRYTILES, SELF, tile_flat_check, nearby_tile_slope(0, 0)) {
+	SLOPE_FLAT: return CB_RESULT_LOCATION_ALLOW;
+	1..255: return string(STR_TILE_FLAT_CHECK_FAILED);
+}
+
+switch (FEAT_INDUSTRIES, SELF, town_distance_check_20, town_euclidean_dist(0, 0)) {
+	0..399: return string(STR_INDUSTRY_TOO_CLOSE_TO_TOWN);
+	return CB_RESULT_LOCATION_ALLOW;
+}
+
+#define TOWN_INDUSTRY_LOCATION_SWITCHES(industry_id) \
+switch (FEAT_INDUSTRIES, SELF, industry_##industry_id##_monopoly_check, industry_town_count(industry_id, -1)) { \
+	0: town_below_2000; \
+	return string(STR_ONE_INDUSTRY_PER_TOWN); \
+} \
+\
+switch (FEAT_INDUSTRIES, SELF, check_nearby_##industry_id##_industry, industry_distance(industry_id, -1)) { \
+	0..19: return string(STR_TOWN_INDUSTRY_TOO_CLOSE); \
+	industry_##industry_id##_monopoly_check; \
+}
+
+#define INDUSTRY_LOCATION_SWITCHES(industry_id) \
+switch (FEAT_INDUSTRIES, SELF, industry_##industry_id##_monopoly_check, industry_town_count(industry_id, -1)) { \
+	0: ( (industry_id == IND_TOWER) ? CB_RESULT_LOCATION_ALLOW : town_distance_check_20 ); \
+	return string(STR_ONE_INDUSTRY_PER_TOWN); \
+} \
+\
+switch (FEAT_INDUSTRIES, SELF, check_nearby_##industry_id##_industry, industry_distance(industry_id, -1)) { \
+	0..49: return string(STR_INDUSTRY_TOO_CLOSE); \
+	industry_##industry_id##_monopoly_check; \
+}
+

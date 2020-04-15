@@ -1,0 +1,69 @@
+/* tower.pnml */
+
+/*
+    License: GPL v2
+    https://github.com/jrook1445/wannaroo-tourist-set
+*/
+
+/*
+ 	perm storage
+
+	0x00: closure counter (see callbacks_production.pnml)
+	0x02: production rate (see callbacks_production.pnml)
+	0x06: count of tourists delivered during the month (see callbacks_production.pnml)
+	0x0F: industry initialised (0=no cargo ever delivered, 1=cargo delivery has occurred, now start closure counter)
+*/
+
+tilelayout jrtower_tilelayout1 {
+	0, 0: jrtower_tile_N;
+}
+
+INDUSTRY_LOCATION_SWITCHES(IND_TOWER)
+
+// not using @ 20190213
+/*
+switch (FEAT_INDUSTRIES, SELF, tower_water_check, water_distance) {
+	0..12: check_nearby_IND_TOWER_industry;
+	return string(STR_TOWER_WATER_CHECK_FAILED);
+}
+*/
+
+if (TOWER_ENABLED) {
+
+	item (FEAT_INDUSTRIES, industry_tower, IND_TOWER) {
+		property {
+			substitute:		INDUSTRYTYPE_POWER_PLANT;
+			layouts:		[jrtower_tilelayout1];
+			life_type:		IND_LIFE_TYPE_BLACK_HOLE;
+			// costs from FIRS 3 hotel
+			fund_cost_multiplier:	101;
+			remove_cost_multiplier:	0;
+			prod_cargo_types:	[cargotype("TOUR")];
+			accept_cargo_types:	[cargotype("TOUR")];
+			prod_multiplier:	[0, 0];
+			min_cargo_distr:	5;
+			input_multiplier_1:	[0, 0];
+			input_multiplier_2:	[0, 0];
+			input_multiplier_3:	[0, 0];
+			conflicting_ind_types:	[industry_type(IND_TYPE_NEW, IND_HOTEL), industry_type(IND_TYPE_NEW, IND_TOWER), industry_type(IND_TYPE_NEW, IND_TOWN_SQUARE)];
+			prob_map_gen:		param_manual_placement ? 0 : 1;
+			prob_in_game:		param_manual_placement ? 0 : 2;
+			prospect_chance:	1.0;
+			map_colour:		186;
+			name:			string(STR_TOWER_NAME);
+			nearby_station_name:	string(STR_TOWER_STATION_NAME);
+		}
+		graphics {
+			location_check:		check_nearby_IND_TOWER_industry;
+			build_prod_change:	tourist_initial_prod_rate; //STORE_PERM(abs(extra_callback_info2%5)+4, 0x02);
+	                produce_cargo_arrival:  tourist_industry_cargo_arrival;
+	                produce_256_ticks:	produce_1_cargo;
+        	        monthly_prod_change:    production_change_1_cargo;
+               		random_prod_change:     return CB_RESULT_IND_PROD_NO_CHANGE;
+			extra_text_industry:	tourist_debug_text;
+			cargo_subtype_display:	industry_remove_cargo_text;
+		}
+	}
+
+}
+

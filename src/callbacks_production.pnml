@@ -1,0 +1,153 @@
+/* callbacks_production.pnml */
+
+/*
+    License: GPL v2
+    https://github.com/jrook1445/wannaroo-tourist-set
+*/
+
+/* called by tourist industries
+   production callbacks derived from smallmines production callbacks, many thanks Sylf!!
+   https://dev.openttdcoop.org/projects/smallmines
+*/
+
+/*
+  perm storage:
+  0x00: closure counter
+  0x02: production rate, cargo produced every 256 ticks
+  0x06: count of tourists delivered during the month
+  0x0F: industry initialised (0=no cargo ever delivered, 1=cargo delivery has occurred, now start closure counter)
+        only initialised when TOUR delivered => Hotel/Town Square will accept other cargos without closure counter starting
+
+*/
+
+produce(tourist_industry_cargo_arrival, [STORE_PERM(LOAD_PERM(0x06)+waiting_cargo_1, 0x06), STORE_PERM(1, 0x0F), waiting_cargo_1], waiting_cargo_2, waiting_cargo_3, 0, 0, 0);
+
+produce(produce_1_cargo, 0, 0, 0, LOAD_PERM(0x02), 0, 0);
+
+/* on a production change, close after the closure protection period has passed without a cargo pickup */
+switch (FEAT_INDUSTRIES, SELF, do_production_change, (param_closure_protect_time>0 && LOAD_PERM(0x00)>param_closure_protect_time) ) {
+    1: return CB_RESULT_IND_PROD_CLOSE;
+    return CB_RESULT_IND_PROD_NO_CHANGE;
+}
+
+switch (FEAT_INDUSTRIES, SELF, prod_increase_3, [
+    STORE_PERM(min(LOAD_PERM(0x02)+3, param_max_tour_prod/8), 0x02)]) {
+    do_production_change;
+}
+switch (FEAT_INDUSTRIES, SELF, prod_increase_2, [
+    STORE_PERM(min(LOAD_PERM(0x02)+2, param_max_tour_prod/8), 0x02)]) {
+    do_production_change;
+}
+switch (FEAT_INDUSTRIES, SELF, prod_increase_1, [
+    STORE_PERM(min(LOAD_PERM(0x02)+1, param_max_tour_prod/8), 0x02)]) {
+    do_production_change;
+}
+
+// jrook 20190727
+// lowest prod rate shall be 4
+switch (FEAT_INDUSTRIES, SELF, prod_decrease_3, [
+    STORE_PERM(max(LOAD_PERM(0x02)-3, 4), 0x02)]) {
+    do_production_change;
+}
+switch (FEAT_INDUSTRIES, SELF, prod_decrease_2, [
+    STORE_PERM(max(LOAD_PERM(0x02)-2, 4), 0x02)]) {
+    do_production_change;
+}
+switch (FEAT_INDUSTRIES, SELF, prod_decrease_1, [
+    STORE_PERM(max(LOAD_PERM(0x02)-1, 4), 0x02)]) {
+    do_production_change;
+}
+
+switch (FEAT_INDUSTRIES, SELF, new_prod_change_great, getbits(extra_callback_info2, 4, 4)) {
+    0..3 : prod_increase_3;
+    4..7 : prod_increase_2;
+    8..12 : prod_increase_1;
+    13 : prod_decrease_3;
+    14 : prod_decrease_2;
+    15 : prod_decrease_1;
+    return CB_FAILED;
+}
+
+switch (FEAT_INDUSTRIES, SELF, new_prod_change_good, getbits(extra_callback_info2, 4, 4)) {
+    0..2 : prod_increase_3;
+    3..5 : prod_increase_2;
+    6..9 : prod_increase_1;
+    10..11 : prod_decrease_3;
+    12..13 : prod_decrease_2;
+    14..15 : prod_decrease_1;
+    return CB_FAILED;
+}
+
+switch (FEAT_INDUSTRIES, SELF, new_prod_change_poor, getbits(extra_callback_info2, 4, 4)) {
+    0..1 : prod_increase_3;
+    2..3 : prod_increase_2;
+    4..5 : prod_increase_1;
+    6..8 : prod_decrease_3;
+    9..11 : prod_decrease_2;
+    12..15 : prod_decrease_1;
+    return CB_FAILED;
+}
+
+// jrook 20190727
+// 5/16 chance increase 1, 1/16 decrease 1
+switch (FEAT_INDUSTRIES, SELF, new_prod_change_increase, getbits(extra_callback_info2, 4, 4)) {
+    0..4 : prod_increase_1;
+    5 : prod_decrease_1;
+    6..15 : return CB_RESULT_IND_PROD_NO_CHANGE;
+    return CB_FAILED;
+}
+
+// jrook 20190727
+// 5/16 chance decrease 1, 1/16 increase 1
+switch (FEAT_INDUSTRIES, SELF, new_prod_change_decrease, getbits(extra_callback_info2, 4, 4)) {
+    0..4 : prod_decrease_1;
+    5 : prod_increase_1;
+    6..15 : return CB_RESULT_IND_PROD_NO_CHANGE;
+    return CB_FAILED;
+}
+
+// jrook 20190727
+// if transp % > 64, then 5/16 chance increase 1, 1/16 decrease 1
+// else 5/16 chance decrease 1, 1/16 increase 1
+switch (FEAT_INDUSTRIES, SELF, production_change_1_cargo_change, transported_last_month_pct_1) {
+    0..64 : new_prod_change_decrease;
+    65..100 : new_prod_change_increase;
+    return CB_FAILED;
+}
+
+/*
+switch (FEAT_INDUSTRIES, SELF, production_change_1_cargo_change, transported_last_month_pct_1) {
+    0..49 : new_prod_change_poor;
+    50..74 : new_prod_change_good;
+    75..100 : new_prod_change_great;
+    return CB_FAILED;
+}
+*/
+
+switch (FEAT_INDUSTRIES, SELF, production_change_1_cargo_c, getbits(extra_callback_info2, 0, 4)) {
+	// jrook 20190727, prod change is now 50/50
+	//0..3 : production_change_1_cargo_change;
+	0..7 : production_change_1_cargo_change;
+	//4..15 : return CB_RESULT_IND_PROD_NO_CHANGE;
+	8..15 : return CB_RESULT_IND_PROD_NO_CHANGE;
+	return CB_FAILED;
+}
+
+// check if any cargo was transported last month
+// if yes, reset closure counter
+// if no, increase closure counter by 1
+// on a production change, close after the closure protection period has passed without a cargo pickup
+switch (FEAT_INDUSTRIES, SELF, production_change_1_cargo_b, STORE_PERM( ((transported_last_month_1 > 0) ? 0 : LOAD_PERM(0x00)+1), 0x00 )) {
+	production_change_1_cargo_c;
+}
+
+// continue production change iff industry has been initialised
+switch (FEAT_INDUSTRIES, SELF, production_change_1_cargo_a, (LOAD_PERM(0x0F) == 1)) {
+	0: return CB_RESULT_IND_PROD_NO_CHANGE;
+	1: production_change_1_cargo_b;
+}
+
+switch (FEAT_INDUSTRIES, SELF, production_change_1_cargo, [STORE_PERM(0, 0x06), STORE_PERM(getbits(extra_callback_info2, 0, 4), 4), STORE_PERM(getbits(extra_callback_info2, 4, 4), 5)]) {
+	production_change_1_cargo_a;
+}
+

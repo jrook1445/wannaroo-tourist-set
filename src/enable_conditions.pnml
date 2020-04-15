@@ -1,0 +1,18 @@
+/* enable_conditions.pnml */
+
+/*
+    License: GPL v2
+    https://github.com/jrook1445/wannaroo-tourist-set
+*/
+
+/*
+ * =============================================================================
+ * ENABLE CONDITIONS
+ * =============================================================================
+ */
+
+#define HOTEL_ENABLED		param_enable_hotel
+#define TOWER_ENABLED		param_enable_tower
+#define TOWN_SQUARE_ENABLED	param_enable_town_square
+#define TOURIST_CHAIN_ENABLED	param_enable_hotel || param_enable_tower || param_enable_town_square || param_enable_houses
+

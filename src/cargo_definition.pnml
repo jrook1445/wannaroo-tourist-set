@@ -1,0 +1,40 @@
+/* cargo_definition.pnml */
+
+/*
+    License: GPL v2
+    https://github.com/jrook1445/wannaroo-tourist-set
+*/
+
+spriteset(cargoicon_tourists) {
+	[10 + 20 * 0, 10 + 20 * 0, 10, 10, 0, 0, "src/gfx/cargoicons.png"]
+}
+
+if (TOURIST_CHAIN_ENABLED) {
+	item(FEAT_CARGOS, cargo_tourist, 31) {
+		property {
+			type_name: string(STR_CARGO_NAME_TOURIST);
+			unit_name: string(STR_CARGO_NAME_TOURIST);
+			type_abbreviation: string(STR_CID_TOURIST);
+			sprite: NEW_CARGO_SPRITE;
+			weight: 0.09375; // 1.5x passenger to account for luggage
+			station_list_colour: 94;
+			cargo_payment_list_colour: 94;
+			is_freight: 0;
+			cargo_classes: bitmask(CC_PASSENGERS, CC_EXPRESS);
+			cargo_label: "TOUR";
+			town_growth_effect: TOWNGROWTH_PASSENGERS;
+			town_growth_multiplier: 1.25; // passenger = 1.0
+			units_of_cargo: string(STR_CARGO_UNIT_TOURIST);
+			items_of_cargo: string(STR_CARGO_UNIT_TOURIST);
+			penalty_lowerbound: 0;
+			single_penalty_length: 15; // 2/3 passenger value as tourists are usually in a hurry
+			price_factor: 210; // 2x passenger
+			capacity_multiplier: 2.67; // passenger = 4
+			number: 31;
+		}
+		graphics {
+			cargoicon_tourists;
+		}
+	}
+}
+

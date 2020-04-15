@@ -1,0 +1,216 @@
+/* header.pnml */
+
+/*
+    License: GPL v2
+    https://github.com/jrook1445/wannaroo-tourist-set
+*/
+
+if (openttd_version < version_openttd(1, 7, 2)) {
+	error(FATAL, REQUIRES_OPENTTD, "1.7.2");
+}
+
+/* This NewGRF currently does not work properly in toyland
+ * climate. Disable it in that case
+ */
+
+if (climate == CLIMATE_TOYLAND) {
+	error(FATAL, string(STR_ERR_NO_TOYLAND));
+}
+
+grf {
+	grfid: "jdr\02";
+	name: string(STR_GRF_NAME);
+	desc: string(STR_GRF_DESCRIPTION);
+	version: 10;
+	min_compatible_version: 10;
+    url: string(STR_GRF_URL);
+
+	param {
+		param_enable_hotel {
+			type: bool;
+			def_value: 0;
+			name: string(STR_PARAM_NAME_ENABLE_HOTEL);
+			desc: string(STR_PARAM_DESC_ENABLE_HOTEL);
+		}
+	}
+
+	param {
+		param_enable_tower {
+			type: bool;
+			def_value: 0;
+			name: string(STR_PARAM_NAME_ENABLE_TOWER);
+			desc: string(STR_PARAM_DESC_ENABLE_TOWER);
+		}
+	}
+
+	param {
+		param_enable_town_square {
+			type: bool;
+			def_value: 0;
+			name: string(STR_PARAM_NAME_ENABLE_TOWN_SQUARE);
+			desc: string(STR_PARAM_DESC_ENABLE_TOWN_SQUARE);
+		}
+	}
+
+	param {
+		param_enable_houses {
+			type: bool;
+			def_value: 0;
+			name: string(STR_PARAM_NAME_ENABLE_HOUSES);
+			desc: string(STR_PARAM_DESC_ENABLE_HOUSES);
+		}
+	}
+
+	param {
+		param_manual_placement {
+			type: bool;
+			def_value: 1;
+			name: string(STR_PARAM_NAME_MANUAL_PLACEMENT);
+			desc: string(STR_PARAM_DESC_MANUAL_PLACEMENT);
+		}
+	}
+
+	param {
+		param_max_tour_prod {
+			type: int;
+			min_value: 32;
+			max_value: 512;
+			def_value: 160;
+			name: string(STR_PARAM_NAME_MAX_TOUR_PROD);
+			desc: string(STR_PARAM_DESC_MAX_TOUR_PROD);
+		}
+	}
+
+	param {
+		param_closure_protect_time {
+			type: int;
+			min_value: 0;
+			max_value: 600;
+			def_value: 60;
+			name: string(STR_PARAM_NAME_CLOSURE_PROTECTION_TIME);
+			desc: string(STR_PARAM_DESC_CLOSURE_PROTECTION_TIME);
+		}
+	}
+
+	param {
+		param_enable_debug_text {
+			type: bool;
+			def_value: 0;
+			name: string(STR_PARAM_NAME_ENABLE_DEBUG_TEXT);
+			desc: string(STR_PARAM_DESC_ENABLE_DEBUG_TEXT);
+		}
+	}
+
+	param {
+		param_define_industry_basecosts {
+			type: bool;
+			def_value: 0;
+			name: string(STR_PARAM_NAME_DEFINE_INDUSTRY_BASECOSTS);
+			desc: string(STR_PARAM_DESC_DEFINE_INDUSTRY_BASECOSTS);
+		}
+	}
+
+	param {
+		param_industry_basecosts {
+			type: int;
+			name: string(STR_PARAM_NAME_INDUSTRY_BASECOSTS);
+			desc: string(STR_PARAM_DESC_BASECOSTS);
+			min_value: 0;
+			max_value: 5;
+			def_value: 0;
+			names: {
+				0: string(STR_PARAM_NORMAL);
+				1: string(STR_PARAM_HALF);
+				2: string(STR_PARAM_QUARTER);
+				3: string(STR_PARAM_EIGHTH);
+				4: string(STR_PARAM_SIXTEENTH);
+				5: string(STR_PARAM_MINIMAL);
+			};
+		}
+	}
+
+	param {
+		param_define_train_basecosts {
+			type: bool;
+			def_value: 0;
+			name: string(STR_PARAM_NAME_DEFINE_TRAIN_BASECOSTS);
+			desc: string(STR_PARAM_DESC_DEFINE_TRAIN_BASECOSTS);
+		}
+	}
+
+	param {
+		param_train_basecosts {
+			type: int;
+			name: string(STR_PARAM_NAME_TRAIN_BASECOSTS);
+			desc: string(STR_PARAM_DESC_BASECOSTS);
+			min_value: 0;
+			max_value: 5;
+			def_value: 0;
+			names: {
+				0: string(STR_PARAM_NORMAL);
+				1: string(STR_PARAM_HALF);
+				2: string(STR_PARAM_QUARTER);
+				3: string(STR_PARAM_EIGHTH);
+				4: string(STR_PARAM_SIXTEENTH);
+				5: string(STR_PARAM_MINIMAL);
+			};
+		}
+	}
+
+	param {
+		param_define_rv_basecosts {
+			type: bool;
+			def_value: 0;
+			name: string(STR_PARAM_NAME_DEFINE_RV_BASECOSTS);
+			desc: string(STR_PARAM_DESC_DEFINE_RV_BASECOSTS);
+		}
+	}
+
+	param {
+		param_rv_basecosts {
+			type: int;
+			name: string(STR_PARAM_NAME_RV_BASECOSTS);
+			desc: string(STR_PARAM_DESC_BASECOSTS);
+			min_value: 0;
+			max_value: 5;
+			def_value: 0;
+			names: {
+				0: string(STR_PARAM_NORMAL);
+				1: string(STR_PARAM_HALF);
+				2: string(STR_PARAM_QUARTER);
+				3: string(STR_PARAM_EIGHTH);
+				4: string(STR_PARAM_SIXTEENTH);
+				5: string(STR_PARAM_MINIMAL);
+			};
+		}
+	}
+
+}
+
+if (param_define_industry_basecosts) {
+	basecost {
+	 	PR_BUILD_INDUSTRY:	0 - param_industry_basecosts;
+	 	PR_BUILD_INDUSTRY_RAW:	0 - param_industry_basecosts;
+	 	PR_CLEAR_INDUSTRY:	0 - param_industry_basecosts;
+	}
+}
+
+if (param_define_train_basecosts) {
+	basecost {
+	 	PR_BUILD_VEHICLE_TRAIN:	0 - param_train_basecosts;
+	 	PR_BUILD_VEHICLE_WAGON:	0 - param_train_basecosts;
+	 	PR_RUNNING_TRAIN_STEAM:	0 - param_train_basecosts;
+	 	PR_RUNNING_TRAIN_DIESEL: 0 - param_train_basecosts;
+	 	PR_RUNNING_TRAIN_ELECTRIC: 0 - param_train_basecosts;
+	}
+}
+
+if (param_define_rv_basecosts) {
+	basecost {
+	 	PR_BUILD_VEHICLE_ROAD:	0 - param_rv_basecosts;
+	 	PR_RUNNING_ROADVEH:	0 - param_rv_basecosts;
+	}
+}
+
+cargotable {TOUR, FOOD, GOOD, BEER, PASS, MAIL}
+
