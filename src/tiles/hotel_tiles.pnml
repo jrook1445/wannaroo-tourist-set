@@ -1,0 +1,70 @@
+/* hotel_tiles.pnml */
+
+/*
+    License: GPL v2
+    https://github.com/jrook1445/wannaroo-tourist-set
+*/
+
+spritelayout jrhotel_tile_N_spritelayout {
+	ground { sprite: GROUNDSPRITE_CONCRETE; }
+	building { sprite: (construction_state==0 ? 4471 : construction_state==3 ? 4475 : 4473); recolour_mode: RECOLOUR_REMAP; palette: PALETTE_STRUCT_YELLOW; }
+}
+
+spritelayout jrhotel_tile_E_spritelayout {
+	ground { sprite: GROUNDSPRITE_CONCRETE; }
+	building { sprite: (construction_state==0 ? 4472 : construction_state==3 ? 4476 : 4474); recolour_mode: RECOLOUR_REMAP; palette: PALETTE_STRUCT_YELLOW; }
+}
+
+spritelayout jrhotel_tile_S_spritelayout {
+	ground { sprite: GROUNDSPRITE_NORMAL; }
+	childsprite { sprite: 1455; yoffset: 6; }
+}
+
+spritelayout jrhotel_tile_W_spritelayout {
+	ground { sprite: GROUNDSPRITE_NORMAL; }
+	building { sprite: 1456; }
+}
+
+item (FEAT_INDUSTRYTILES, jrhotel_tile_N, 0) {
+	property {
+		substitute: 0;
+		accepted_cargos: [[TOUR, 8], [FOOD, 8], [BEER, 8]];
+	}
+	graphics {
+		tile_check: tile_industry_check_1;
+		jrhotel_tile_N_spritelayout;
+	}
+}
+
+item (FEAT_INDUSTRYTILES, jrhotel_tile_E, 1) {
+	property {
+		substitute: 0;
+		accepted_cargos: [[TOUR, 8], [FOOD, 8], [BEER, 8]];
+	}
+	graphics {
+		tile_check: tile_industry_check_1;
+		jrhotel_tile_E_spritelayout;
+	}
+}
+
+item (FEAT_INDUSTRYTILES, jrhotel_tile_S, 2) {
+	property {
+		substitute: 0;
+		accepted_cargos: [];
+	}
+	graphics {
+		tile_check: tile_industry_check_1;
+		jrhotel_tile_S_spritelayout;
+	}
+}
+
+item (FEAT_INDUSTRYTILES, jrhotel_tile_W, 3) {
+	property {
+		substitute: 0;
+		accepted_cargos: [];
+	}
+	graphics {
+		tile_check: tile_industry_check_1;
+		jrhotel_tile_W_spritelayout;
+	}
+}

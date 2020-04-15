@@ -1,0 +1,197 @@
+/* tower_tiles.pnml */
+
+/*
+    License: GPL v2
+    https://github.com/jrook1445/wannaroo-tourist-set
+*/
+
+spriteset (tower_building) {
+	[0, 0, 50, 83, -25, -55, NOANIM, "src/gfx/tower_sprite.png"]
+}
+
+spriteset (pavilion_building) {
+	[0, 0, 54, 81, -27, -53, NOANIM, "src/gfx/pavilion_sprite.png"]
+}
+
+spriteset (mayan_ruins_building) {
+	[0, 0, 60, 41, -29, -8, NOANIM, "src/gfx/mayan_ruins_sprite.png"]
+}
+
+spriteset (chichen_itza_ruins_building) {
+	[0, 0, 60, 43, -30, -11, NOANIM, "src/gfx/chichen_itza_ruins_sprite.png"]
+}
+
+spriteset (pyramid_beige_building) {
+	[0, 0, 60, 46, -30, -11, NOANIM, "src/gfx/pyramid_beige_sprite.png"]
+}
+
+spriteset (pyramid_brown_building) {
+	[0, 0, 60, 46, -30, -11, NOANIM, "src/gfx/pyramid_brown_sprite.png"]
+}
+
+spriteset (pyramid_tan_building) {
+	[0, 0, 60, 46, -30, -11, NOANIM, "src/gfx/pyramid_tan_sprite.png"]
+}
+
+spriteset (monument_building) {
+	[0, 0, 30, 48, -15, -21, NOANIM, "src/gfx/monument_sprite.png"]
+}
+
+/*
+spriteset (wickerman_building) {
+	[0, 0, 37, 84, -19, -57, NOANIM, "src/gfx/wickerman_sprite.png"]
+}
+*/
+
+spritelayout jrtower_tile_N_spritelayout { // tower
+	ground { sprite: GROUNDSPRITE_CONCRETE; }
+	//building { sprite: 4629; }
+	building { sprite: tower_building; }
+}
+
+spritelayout jrpavilion_tile_N_spritelayout { // pavilion
+	ground { sprite: GROUNDSPRITE_CONCRETE; }
+	//building { sprite: 4638; }
+	building { sprite: pavilion_building; }
+}
+
+spritelayout jrlodge_tile_N_spritelayout { // lodge
+	ground { sprite: GROUNDSPRITE_NORMAL; }
+	building { sprite: 4635; }
+}
+
+spritelayout jrlighthouse_tile_N_spritelayout { // lighthouse
+	ground { sprite: GROUNDSPRITE_NORMAL; }
+	building { sprite: 2602; xoffset: 5; yoffset: 5; }
+}
+
+spritelayout jrmayan_tile_N_spritelayout { // mayan ruins
+	ground { sprite: GROUNDSPRITE_NORMAL; }
+	building { sprite: mayan_ruins_building; }
+}
+
+spritelayout jrchichen_tile_N_spritelayout { // chichen itza ruins
+	ground { sprite: GROUNDSPRITE_NORMAL; }
+	building { sprite: chichen_itza_ruins_building; }
+}
+
+spritelayout jrpyramid_beige_tile_N_spritelayout { // pyramid, beige
+	ground { sprite: GROUNDSPRITE_NORMAL; }
+	building { sprite: pyramid_beige_building; }
+}
+
+spritelayout jrpyramid_brown_tile_N_spritelayout { // pyramid, brown
+	ground { sprite: GROUNDSPRITE_NORMAL; }
+	building { sprite: pyramid_brown_building; }
+}
+
+spritelayout jrpyramid_tan_tile_N_spritelayout { // pyramid, tan
+	ground { sprite: GROUNDSPRITE_NORMAL; }
+	building { sprite: pyramid_tan_building; }
+}
+
+spritelayout jrmonument_tile_N_spritelayout { // monument
+	ground { sprite: GROUNDSPRITE_NORMAL; }
+	building { sprite: monument_building; }
+}
+
+/*
+spritelayout jrwickerman_tile_N_spritelayout { // wicker man
+	ground { sprite: GROUNDSPRITE_NORMAL; }
+	building { sprite: wickerman_building; }
+}
+*/
+
+// check climate, nearby tiles to determine what kind of tower to build
+// temperate & arctic towers are the same
+
+// tower: any location
+// pavilion: any location
+// monument: any location
+// wicker man: any climate, sea coast only
+// lighthouse: any climate, sea coast only
+
+// lodge: temperate|arctic trees only
+
+// pyramid: tropic desert only
+// ruins: tropic trees only
+
+// temperate: check for trees, sea coast
+// arctic: check for trees, sea coast
+// tropic: check for desert, trees, sea coast
+
+random_switch (FEAT_INDUSTRYTILES, SELF, tower_chooser) {
+	3: return jrtower_tile_N_spritelayout;
+	2: return jrpavilion_tile_N_spritelayout;
+	1: return jrmonument_tile_N_spritelayout;
+}
+
+random_switch (FEAT_INDUSTRYTILES, SELF, lodge_chooser) {
+	15: return jrlodge_tile_N_spritelayout;
+	1: return jrtower_tile_N_spritelayout;
+	1: return jrpavilion_tile_N_spritelayout;
+	1: return jrmonument_tile_N_spritelayout;
+}
+
+random_switch (FEAT_INDUSTRYTILES, SELF, mayan_chooser) {
+	8: return jrmayan_tile_N_spritelayout;
+	7: return jrchichen_tile_N_spritelayout;
+	1: return jrtower_tile_N_spritelayout;
+	1: return jrpavilion_tile_N_spritelayout;
+	1: return jrmonument_tile_N_spritelayout;
+}
+
+random_switch (FEAT_INDUSTRYTILES, SELF, pyramid_chooser) {
+	5: return jrpyramid_beige_tile_N_spritelayout;
+	5: return jrpyramid_brown_tile_N_spritelayout;
+	5: return jrpyramid_tan_tile_N_spritelayout;
+	1: return jrtower_tile_N_spritelayout;
+	1: return jrpavilion_tile_N_spritelayout;
+	1: return jrmonument_tile_N_spritelayout;
+}
+
+random_switch (FEAT_INDUSTRYTILES, SELF, lighthouse_chooser) {
+	15: return jrlighthouse_tile_N_spritelayout;
+	1: return jrtower_tile_N_spritelayout;
+	1: return jrpavilion_tile_N_spritelayout;
+	1: return jrmonument_tile_N_spritelayout;
+	//1: return jrwickerman_tile_N_spritelayout;
+}
+
+//switch (FEAT_INDUSTRYTILES, SELF, tower_get_spritelayout_5, ( town_zone == 0 && nearby_tile_class(2, 0) == TILE_CLASS_TREES && nearby_tile_class(-2, 0) == TILE_CLASS_TREES && nearby_tile_class(0, 2) == TILE_CLASS_TREES && nearby_tile_class(0, -2) == TILE_CLASS_TREES ) ) {
+switch (FEAT_INDUSTRYTILES, SELF, tower_get_spritelayout_5, ( town_zone == 0 && nearby_tile_class(2, 0) == TILE_CLASS_TREES && nearby_tile_class(-2, 0) == TILE_CLASS_TREES && nearby_tile_class(0, 2) == TILE_CLASS_TREES && nearby_tile_class(0, -2) == TILE_CLASS_TREES ) ) {
+	0: tower_chooser; // not sea, desert, or forest, so choose something else
+	1: lodge_chooser; // chain to a random_switch here, weighted for the lodge but including others
+}
+
+//switch (FEAT_INDUSTRYTILES, SELF, tower_get_spritelayout_4, ( town_zone == 0 && climate == CLIMATE_TROPIC && nearby_tile_class(2, 0) == TILE_CLASS_TREES && nearby_tile_class(-2, 0) == TILE_CLASS_TREES && nearby_tile_class(0, 2) == TILE_CLASS_TREES && nearby_tile_class(0, -2) == TILE_CLASS_TREES ) ) {
+switch (FEAT_INDUSTRYTILES, SELF, tower_get_spritelayout_4, ( town_zone == 0 && climate == CLIMATE_TROPIC && nearby_tile_class(2, 0) == TILE_CLASS_TREES && nearby_tile_class(-2, 0) == TILE_CLASS_TREES && nearby_tile_class(0, 2) == TILE_CLASS_TREES && nearby_tile_class(0, -2) == TILE_CLASS_TREES ) ) {
+	0: tower_get_spritelayout_5; // temperate/arctic tree check
+	1: mayan_chooser;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tower_get_spritelayout_3, ( town_zone == 0 && nearby_tile_terrain_type(2, 0) == TILETYPE_DESERT && nearby_tile_terrain_type(-2, 0) == TILETYPE_DESERT && nearby_tile_terrain_type(0, 2) == TILETYPE_DESERT && nearby_tile_terrain_type(0, -2) == TILETYPE_DESERT && nearby_tile_terrain_type(3, 0) == TILETYPE_DESERT && nearby_tile_terrain_type(-3, 0) == TILETYPE_DESERT && nearby_tile_terrain_type(0, 3) == TILETYPE_DESERT && nearby_tile_terrain_type(0, -3) == TILETYPE_DESERT ) ) {
+	0: tower_get_spritelayout_4; // tropic tree check
+	1: pyramid_chooser;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tower_get_spritelayout_2, ( nearby_tile_water_class(2, 0) == WATER_CLASS_SEA || nearby_tile_water_class(-2, 0) == WATER_CLASS_SEA || nearby_tile_water_class(0, 2) == WATER_CLASS_SEA || nearby_tile_water_class(0, -2) == WATER_CLASS_SEA || nearby_tile_water_class(3, 0) == WATER_CLASS_SEA || nearby_tile_water_class(-3, 0) == WATER_CLASS_SEA || nearby_tile_water_class(0, 3) == WATER_CLASS_SEA || nearby_tile_water_class(0, -3) == WATER_CLASS_SEA ) ) {
+	0: tower_get_spritelayout_3;
+	1: lighthouse_chooser; // chain to a random_switch here, weighted for the lighthouse but including others
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tower_get_spritelayout_1, nearby_tile_slope(0, 0)) {
+	SLOPE_FLAT: tower_get_spritelayout_2; // flat tile, so continue
+	1..255: return string(STR_TILE_FLAT_CHECK_FAILED);
+}
+
+item (FEAT_INDUSTRYTILES, jrtower_tile_N, 4) {
+	property {
+		substitute: 0;
+		accepted_cargos: [[TOUR, 8]];
+	}
+	graphics {
+		tower_get_spritelayout_1;
+	}
+}
+

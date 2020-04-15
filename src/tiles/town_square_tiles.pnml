@@ -1,0 +1,94 @@
+/* town_square_tiles.pnml */
+
+/*
+    License: GPL v2
+    https://github.com/jrook1445/wannaroo-tourist-set
+*/
+
+spritelayout jrtownsquare_tile_N_spritelayout {
+	ground { sprite: 4675; }
+	building { sprite: 4091; xoffset: 0; yoffset: -16; }
+	building { sprite: 4090; xoffset: -16; yoffset: 0; }
+	building { sprite: 1877; xoffset: 0; }
+	building { sprite: 1877; xoffset: 6; }
+	building { sprite: 1877; xoffset: 11; }
+	building { sprite: 1877; yoffset: 6; }
+	building { sprite: 1877; yoffset: 11; }
+}
+
+spritelayout jrtownsquare_tile_E_spritelayout {
+	ground { sprite: 4675; }
+	building { sprite: 4091; xoffset: 0; yoffset: 0; }
+	building { sprite: 4090; xoffset: -16; yoffset: 0; }
+	building { sprite: 1877; yoffset: 0; }
+	building { sprite: 1877; yoffset: 6; }
+	building { sprite: 1877; yoffset: 11; }
+	//building { sprite: 2000; yoffset: 10; }
+	building { sprite: 1877; xoffset: 11; yoffset: 11; }
+	building { sprite: 1877; xoffset: 6; yoffset: 11; }
+}
+
+spritelayout jrtownsquare_tile_S_spritelayout {
+	ground { sprite: 4675; }
+	building { sprite: 4091; xoffset: 0; yoffset: 0; }
+	building { sprite: 4090; xoffset: 0; yoffset: 0; }
+	building { sprite: 1455; xoffset: -7; yoffset: -7; }
+	building { sprite: 1877; xoffset: 11; }
+	building { sprite: 1877; xoffset: 11; yoffset: 5; }
+	building { sprite: 1877; xoffset: 11; yoffset: 11; }
+	building { sprite: 1877; xoffset: 5; yoffset: 11; }
+	building { sprite: 1877; xoffset: 0; yoffset: 11; }
+}
+
+spritelayout jrtownsquare_tile_W_spritelayout {
+	ground { sprite: 4675; }
+	building { sprite: 4091; xoffset: 0; yoffset: -16; }
+	building { sprite: 4090; xoffset: 0; yoffset: 0; }
+	building { sprite: 1877; xoffset: 0; }
+	building { sprite: 1877; xoffset: 6; }
+	building { sprite: 1877; xoffset: 11; }
+	building { sprite: 1877; xoffset: 11; yoffset: 6; }
+	building { sprite: 1877; xoffset: 11; yoffset: 11; }
+	//building { sprite: 2000; xoffset: 10; }
+}
+
+item (FEAT_INDUSTRYTILES, jrtownsquare_tile_N, 5) {
+	property {
+		substitute: 0;
+		accepted_cargos: [[TOUR, 8], [GOOD, 8], [BEER, 8]];
+	}
+	graphics {
+		jrtownsquare_tile_N_spritelayout;
+	}
+}
+
+item (FEAT_INDUSTRYTILES, jrtownsquare_tile_E, 6) {
+	property {
+		substitute: 0;
+		accepted_cargos: [[TOUR, 8], [GOOD, 8], [BEER, 8]];
+	}
+	graphics {
+		jrtownsquare_tile_E_spritelayout;
+	}
+}
+
+item (FEAT_INDUSTRYTILES, jrtownsquare_tile_S, 7) {
+	property {
+		substitute: 0;
+		accepted_cargos: [[TOUR, 8], [GOOD, 8], [BEER, 8]];
+	}
+	graphics {
+		jrtownsquare_tile_S_spritelayout;
+	}
+}
+
+item (FEAT_INDUSTRYTILES, jrtownsquare_tile_W, 8) {
+	property {
+		substitute: 0;
+		accepted_cargos: [[TOUR, 8], [GOOD, 8], [BEER, 8]];
+	}
+	graphics {
+		jrtownsquare_tile_W_spritelayout;
+	}
+}
+
