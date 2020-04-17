@@ -4,6 +4,8 @@ NewGRF for OpenTTD - Tourist industries
 
 1. About
 
+    Tourist industries for OpenTTD, inspired by WhiteHand's tourist set and tourist-accepting houses in ECS Houses, Swedish Houses.
+
 1. Compatibility
 
     Compatibility with any newgrf is not guaranteed. No warranties are expressed or implied. Not tested with OpenTTD versions < 1.7.2.
@@ -15,9 +17,13 @@ NewGRF for OpenTTD - Tourist industries
 1. Features
 
     * 3 new tourist industries:
-        * Hotel: produces tourists; accepts tourists, food, alcohol :cocktail:
+        * Hotel: produces tourists; accepts tourists, food, alcohol :wine_glass:
         * Visitor Center: produces and accepts tourists
-        * Town Square: produces tourists; accepts tourists, goods, alcohol :cocktail:
+        * Town Square: produces tourists; accepts tourists, goods, alcohol :beers:
+        
+    * 4 houses:
+        * 2 houses (rustic, regular) produce 8 +/- 3 tourists per production tick
+        * 2 tall buildings (tower block, flats) produce 20 +/- 4 tourists per production tick
 
 1. Development
 
