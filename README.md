@@ -4,7 +4,7 @@ NewGRF for OpenTTD - Tourist industries
 
 1. About
 
-    Tourist industries for OpenTTD, inspired by WhiteHand's tourist set and tourist-accepting houses in ECS Houses, Swedish Houses.
+    Tourist industries for OpenTTD, inspired by WhiteHand's tourist set and tourist-accepting houses in ECS Houses, Swedish Houses, FIRS 3 Hotel.
 
 1. Compatibility
 
@@ -26,8 +26,8 @@ NewGRF for OpenTTD - Tourist industries
             * Rustic House: ![Rustic House](src/gfx/rustic_house.png)
             * Regular House: ![Regular House](src/gfx/regular_house.png)
         * 2 tall buildings (tower block, flats) produce 20 +/- 4 tourists per production tick
-        * Tower Block: ![Tower Block](src/gfx/tower_block.png)
-        * Flats: ![Flats](src/gfx/flats.png)
+            * Tower Block: ![Tower Block](src/gfx/tower_block.png)
+            * Flats: ![Flats](src/gfx/flats.png)
         * max 1 each per town
 
     * Parameters
