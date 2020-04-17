@@ -7,6 +7,7 @@ gcc -C -E -nostdinc -x c-header wannaroo-tourist-set.pnml > wannaroo-tourist-set
 $NMLC -c -p DEFAULT --clear-orphaned wannaroo-tourist-set.nml
 if [ $? -eq 0 ]
 then
+    cp wannaroo-tourist-set.nml generated
     cp wannaroo-tourist-set.grf wannaroo-tourist-set
     cp README.md wannaroo-tourist-set/readme.txt
     cp LICENSE wannaroo-tourist-set/license.txt

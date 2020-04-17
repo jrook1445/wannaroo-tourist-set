@@ -1,0 +1,2517 @@
+# 1 "wannaroo-tourist-set.pnml"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "wannaroo-tourist-set.pnml"
+/* wannaroo-tourist-set.pnml */
+
+/*
+    License: GPL v2
+    https://github.com/jrook1445/wannaroo-tourist-set
+*/
+
+# 1 "src/header.pnml" 1
+/* header.pnml */
+
+/*
+    License: GPL v2
+    https://github.com/jrook1445/wannaroo-tourist-set
+*/
+
+if (openttd_version < version_openttd(1, 7, 2)) {
+ error(FATAL, REQUIRES_OPENTTD, "1.7.2");
+}
+
+/* This NewGRF currently does not work properly in toyland
+ * climate. Disable it in that case
+ */
+
+if (climate == CLIMATE_TOYLAND) {
+ error(FATAL, string(STR_ERR_NO_TOYLAND));
+}
+
+grf {
+ grfid: "jdr\02";
+ name: string(STR_GRF_NAME);
+ desc: string(STR_GRF_DESCRIPTION);
+ version: 10;
+ min_compatible_version: 10;
+    url: string(STR_GRF_URL);
+
+ param {
+  param_enable_hotel {
+   type: bool;
+   def_value: 0;
+   name: string(STR_PARAM_NAME_ENABLE_HOTEL);
+   desc: string(STR_PARAM_DESC_ENABLE_HOTEL);
+  }
+ }
+
+ param {
+  param_enable_tower {
+   type: bool;
+   def_value: 0;
+   name: string(STR_PARAM_NAME_ENABLE_TOWER);
+   desc: string(STR_PARAM_DESC_ENABLE_TOWER);
+  }
+ }
+
+ param {
+  param_enable_town_square {
+   type: bool;
+   def_value: 0;
+   name: string(STR_PARAM_NAME_ENABLE_TOWN_SQUARE);
+   desc: string(STR_PARAM_DESC_ENABLE_TOWN_SQUARE);
+  }
+ }
+
+ param {
+  param_enable_houses {
+   type: bool;
+   def_value: 0;
+   name: string(STR_PARAM_NAME_ENABLE_HOUSES);
+   desc: string(STR_PARAM_DESC_ENABLE_HOUSES);
+  }
+ }
+
+ param {
+  param_manual_placement {
+   type: bool;
+   def_value: 1;
+   name: string(STR_PARAM_NAME_MANUAL_PLACEMENT);
+   desc: string(STR_PARAM_DESC_MANUAL_PLACEMENT);
+  }
+ }
+
+ param {
+  param_max_tour_prod {
+   type: int;
+   min_value: 32;
+   max_value: 512;
+   def_value: 160;
+   name: string(STR_PARAM_NAME_MAX_TOUR_PROD);
+   desc: string(STR_PARAM_DESC_MAX_TOUR_PROD);
+  }
+ }
+
+ param {
+  param_closure_protect_time {
+   type: int;
+   min_value: 0;
+   max_value: 600;
+   def_value: 60;
+   name: string(STR_PARAM_NAME_CLOSURE_PROTECTION_TIME);
+   desc: string(STR_PARAM_DESC_CLOSURE_PROTECTION_TIME);
+  }
+ }
+
+ param {
+  param_enable_debug_text {
+   type: bool;
+   def_value: 0;
+   name: string(STR_PARAM_NAME_ENABLE_DEBUG_TEXT);
+   desc: string(STR_PARAM_DESC_ENABLE_DEBUG_TEXT);
+  }
+ }
+
+ param {
+  param_define_industry_basecosts {
+   type: bool;
+   def_value: 0;
+   name: string(STR_PARAM_NAME_DEFINE_INDUSTRY_BASECOSTS);
+   desc: string(STR_PARAM_DESC_DEFINE_INDUSTRY_BASECOSTS);
+  }
+ }
+
+ param {
+  param_industry_basecosts {
+   type: int;
+   name: string(STR_PARAM_NAME_INDUSTRY_BASECOSTS);
+   desc: string(STR_PARAM_DESC_BASECOSTS);
+   min_value: 0;
+   max_value: 5;
+   def_value: 0;
+   names: {
+    0: string(STR_PARAM_NORMAL);
+    1: string(STR_PARAM_HALF);
+    2: string(STR_PARAM_QUARTER);
+    3: string(STR_PARAM_EIGHTH);
+    4: string(STR_PARAM_SIXTEENTH);
+    5: string(STR_PARAM_MINIMAL);
+   };
+  }
+ }
+
+ param {
+  param_define_train_basecosts {
+   type: bool;
+   def_value: 0;
+   name: string(STR_PARAM_NAME_DEFINE_TRAIN_BASECOSTS);
+   desc: string(STR_PARAM_DESC_DEFINE_TRAIN_BASECOSTS);
+  }
+ }
+
+ param {
+  param_train_basecosts {
+   type: int;
+   name: string(STR_PARAM_NAME_TRAIN_BASECOSTS);
+   desc: string(STR_PARAM_DESC_BASECOSTS);
+   min_value: 0;
+   max_value: 5;
+   def_value: 0;
+   names: {
+    0: string(STR_PARAM_NORMAL);
+    1: string(STR_PARAM_HALF);
+    2: string(STR_PARAM_QUARTER);
+    3: string(STR_PARAM_EIGHTH);
+    4: string(STR_PARAM_SIXTEENTH);
+    5: string(STR_PARAM_MINIMAL);
+   };
+  }
+ }
+
+ param {
+  param_define_rv_basecosts {
+   type: bool;
+   def_value: 0;
+   name: string(STR_PARAM_NAME_DEFINE_RV_BASECOSTS);
+   desc: string(STR_PARAM_DESC_DEFINE_RV_BASECOSTS);
+  }
+ }
+
+ param {
+  param_rv_basecosts {
+   type: int;
+   name: string(STR_PARAM_NAME_RV_BASECOSTS);
+   desc: string(STR_PARAM_DESC_BASECOSTS);
+   min_value: 0;
+   max_value: 5;
+   def_value: 0;
+   names: {
+    0: string(STR_PARAM_NORMAL);
+    1: string(STR_PARAM_HALF);
+    2: string(STR_PARAM_QUARTER);
+    3: string(STR_PARAM_EIGHTH);
+    4: string(STR_PARAM_SIXTEENTH);
+    5: string(STR_PARAM_MINIMAL);
+   };
+  }
+ }
+
+}
+
+if (param_define_industry_basecosts) {
+ basecost {
+   PR_BUILD_INDUSTRY: 0 - param_industry_basecosts;
+   PR_BUILD_INDUSTRY_RAW: 0 - param_industry_basecosts;
+   PR_CLEAR_INDUSTRY: 0 - param_industry_basecosts;
+ }
+}
+
+if (param_define_train_basecosts) {
+ basecost {
+   PR_BUILD_VEHICLE_TRAIN: 0 - param_train_basecosts;
+   PR_BUILD_VEHICLE_WAGON: 0 - param_train_basecosts;
+   PR_RUNNING_TRAIN_STEAM: 0 - param_train_basecosts;
+   PR_RUNNING_TRAIN_DIESEL: 0 - param_train_basecosts;
+   PR_RUNNING_TRAIN_ELECTRIC: 0 - param_train_basecosts;
+ }
+}
+
+if (param_define_rv_basecosts) {
+ basecost {
+   PR_BUILD_VEHICLE_ROAD: 0 - param_rv_basecosts;
+   PR_RUNNING_ROADVEH: 0 - param_rv_basecosts;
+ }
+}
+
+cargotable {TOUR, FOOD, GOOD, BEER, PASS, MAIL}
+# 9 "wannaroo-tourist-set.pnml" 2
+# 1 "src/defcommon.pnml" 1
+/* defcommon.pnml */
+
+/*
+    License: GPL v2
+    https://github.com/jrook1445/wannaroo-tourist-set
+*/
+
+// @TODO:
+// 1. add max number of industries (not yet implemented @ 20200415)
+
+
+
+
+
+/* INDUSTRY TILE IDs
+
+   HOTEL            0-3
+   TOWER            4
+   TOWN_SQUARE      5-8
+
+*/
+
+// max number of industries of a given type is proportional to map size, 256x256 = 4 (maps < 256x256 will have max 3 each type)
+// affects: hotel, tower, town square
+// max number tested in location_checks.pnml
+max_industries = max((map_size / (256 * 256)) * 4, 3);
+
+switch (FEAT_INDUSTRIES, SELF, tourist_initial_prod_rate, 1) {
+ 1: return [STORE_PERM(abs(extra_callback_info2%5)+4, 0x02), 16];
+}
+
+// remove cargo_subtype_display text from industry windows
+// text is put there because we have a produce block
+switch (FEAT_INDUSTRIES, SELF, industry_remove_cargo_text, getbits(extra_callback_info2, 0, 8)) {
+ 0: return 0x3800 + string(STR_EMPTY_STRING);
+ 1: return 0x3800 + string(STR_EMPTY_STRING);
+ 2: return 0x3800 + string(STR_EMPTY_STRING);
+}
+
+//switch (FEAT_INDUSTRIES, SELF, tourist_debug_text, [STORE_TEMP(produced_this_month_1, 256), STORE_TEMP(produced_last_month_1, 257), STORE_TEMP(LOAD_PERM(0x02), 258), STORE_TEMP(param_max_tour_prod/8, 259), STORE_TEMP(LOAD_PERM(0x06), 260), STORE_TEMP(LOAD_PERM(0x00), 261), param_enable_debug_text]) {
+switch (FEAT_INDUSTRIES, SELF, tourist_debug_text, [STORE_TEMP(produced_this_month_1, 256), STORE_TEMP(production_level, 257), STORE_TEMP(LOAD_PERM(0x02), 258), STORE_TEMP(param_max_tour_prod/8, 259), STORE_TEMP(LOAD_PERM(0x06), 260), STORE_TEMP(LOAD_PERM(0x00), 261), param_enable_debug_text]) {
+ 1: return string(STR_INDUSTRY_TOURIST_DEBUG_TEXT);
+ return CB_RESULT_NO_TEXT;
+}
+
+switch (FEAT_INDUSTRIES, PARENT, town_below_2000, population) {
+ 0..1999: return string(STR_TOWN_BELOW_2000);
+ return CB_RESULT_LOCATION_ALLOW;
+}
+
+// called in tile_industry_check
+// the final tile check, only a negative result returned, no onward chain
+// further checks are done by the industry
+switch (FEAT_INDUSTRYTILES, SELF, tile_flat_check, nearby_tile_slope(0, 0)) {
+ SLOPE_FLAT: return CB_RESULT_LOCATION_ALLOW;
+ 1..255: return string(STR_TILE_FLAT_CHECK_FAILED);
+}
+
+switch (FEAT_INDUSTRIES, SELF, town_distance_check_20, town_euclidean_dist(0, 0)) {
+ 0..399: return string(STR_INDUSTRY_TOO_CLOSE_TO_TOWN);
+ return CB_RESULT_LOCATION_ALLOW;
+}
+# 10 "wannaroo-tourist-set.pnml" 2
+# 1 "src/enable_conditions.pnml" 1
+/* enable_conditions.pnml */
+
+/*
+    License: GPL v2
+    https://github.com/jrook1445/wannaroo-tourist-set
+*/
+
+/*
+ * =============================================================================
+ * ENABLE CONDITIONS
+ * =============================================================================
+ */
+# 11 "wannaroo-tourist-set.pnml" 2
+# 1 "src/cargo_definition.pnml" 1
+/* cargo_definition.pnml */
+
+/*
+    License: GPL v2
+    https://github.com/jrook1445/wannaroo-tourist-set
+*/
+
+spriteset(cargoicon_tourists) {
+ [10 + 20 * 0, 10 + 20 * 0, 10, 10, 0, 0, "src/gfx/cargoicons.png"]
+}
+
+if (param_enable_hotel || param_enable_tower || param_enable_town_square || param_enable_houses) {
+ item(FEAT_CARGOS, cargo_tourist, 31) {
+  property {
+   type_name: string(STR_CARGO_NAME_TOURIST);
+   unit_name: string(STR_CARGO_NAME_TOURIST);
+   type_abbreviation: string(STR_CID_TOURIST);
+   sprite: NEW_CARGO_SPRITE;
+   weight: 0.09375; // 1.5x passenger to account for luggage
+   station_list_colour: 94;
+   cargo_payment_list_colour: 94;
+   is_freight: 0;
+   cargo_classes: bitmask(CC_PASSENGERS, CC_EXPRESS);
+   cargo_label: "TOUR";
+   town_growth_effect: TOWNGROWTH_PASSENGERS;
+   town_growth_multiplier: 1.25; // passenger = 1.0
+   units_of_cargo: string(STR_CARGO_UNIT_TOURIST);
+   items_of_cargo: string(STR_CARGO_UNIT_TOURIST);
+   penalty_lowerbound: 0;
+   single_penalty_length: 15; // 2/3 passenger value as tourists are usually in a hurry
+   price_factor: 210; // 2x passenger
+   capacity_multiplier: 2.67; // passenger = 4
+   number: 31;
+  }
+  graphics {
+   cargoicon_tourists;
+  }
+ }
+}
+# 12 "wannaroo-tourist-set.pnml" 2
+# 1 "src/callbacks_production.pnml" 1
+/* callbacks_production.pnml */
+
+/*
+    License: GPL v2
+    https://github.com/jrook1445/wannaroo-tourist-set
+*/
+
+/* called by tourist industries
+   production callbacks derived from smallmines production callbacks, many thanks Sylf!!
+   https://dev.openttdcoop.org/projects/smallmines
+*/
+
+/*
+  perm storage:
+  0x00: closure counter
+  0x02: production rate, cargo produced every 256 ticks
+  0x06: count of tourists delivered during the month
+  0x0F: industry initialised (0=no cargo ever delivered, 1=cargo delivery has occurred, now start closure counter)
+        only initialised when TOUR delivered => Hotel/Town Square will accept other cargos without closure counter starting
+
+*/
+
+produce(tourist_industry_cargo_arrival, [STORE_PERM(LOAD_PERM(0x06)+waiting_cargo_1, 0x06), STORE_PERM(1, 0x0F), waiting_cargo_1], waiting_cargo_2, waiting_cargo_3, 0, 0, 0);
+
+produce(produce_1_cargo, 0, 0, 0, LOAD_PERM(0x02), 0, 0);
+
+/* on a production change, close after the closure protection period has passed without a cargo pickup */
+switch (FEAT_INDUSTRIES, SELF, do_production_change, (param_closure_protect_time>0 && LOAD_PERM(0x00)>param_closure_protect_time) ) {
+    1: return CB_RESULT_IND_PROD_CLOSE;
+    return CB_RESULT_IND_PROD_NO_CHANGE;
+}
+
+switch (FEAT_INDUSTRIES, SELF, prod_increase_3, [
+    STORE_PERM(min(LOAD_PERM(0x02)+3, param_max_tour_prod/8), 0x02)]) {
+    do_production_change;
+}
+switch (FEAT_INDUSTRIES, SELF, prod_increase_2, [
+    STORE_PERM(min(LOAD_PERM(0x02)+2, param_max_tour_prod/8), 0x02)]) {
+    do_production_change;
+}
+switch (FEAT_INDUSTRIES, SELF, prod_increase_1, [
+    STORE_PERM(min(LOAD_PERM(0x02)+1, param_max_tour_prod/8), 0x02)]) {
+    do_production_change;
+}
+
+// jrook 20190727
+// lowest prod rate shall be 4
+switch (FEAT_INDUSTRIES, SELF, prod_decrease_3, [
+    STORE_PERM(max(LOAD_PERM(0x02)-3, 4), 0x02)]) {
+    do_production_change;
+}
+switch (FEAT_INDUSTRIES, SELF, prod_decrease_2, [
+    STORE_PERM(max(LOAD_PERM(0x02)-2, 4), 0x02)]) {
+    do_production_change;
+}
+switch (FEAT_INDUSTRIES, SELF, prod_decrease_1, [
+    STORE_PERM(max(LOAD_PERM(0x02)-1, 4), 0x02)]) {
+    do_production_change;
+}
+
+switch (FEAT_INDUSTRIES, SELF, new_prod_change_great, getbits(extra_callback_info2, 4, 4)) {
+    0..3 : prod_increase_3;
+    4..7 : prod_increase_2;
+    8..12 : prod_increase_1;
+    13 : prod_decrease_3;
+    14 : prod_decrease_2;
+    15 : prod_decrease_1;
+    return CB_FAILED;
+}
+
+switch (FEAT_INDUSTRIES, SELF, new_prod_change_good, getbits(extra_callback_info2, 4, 4)) {
+    0..2 : prod_increase_3;
+    3..5 : prod_increase_2;
+    6..9 : prod_increase_1;
+    10..11 : prod_decrease_3;
+    12..13 : prod_decrease_2;
+    14..15 : prod_decrease_1;
+    return CB_FAILED;
+}
+
+switch (FEAT_INDUSTRIES, SELF, new_prod_change_poor, getbits(extra_callback_info2, 4, 4)) {
+    0..1 : prod_increase_3;
+    2..3 : prod_increase_2;
+    4..5 : prod_increase_1;
+    6..8 : prod_decrease_3;
+    9..11 : prod_decrease_2;
+    12..15 : prod_decrease_1;
+    return CB_FAILED;
+}
+
+// jrook 20190727
+// 5/16 chance increase 1, 1/16 decrease 1
+switch (FEAT_INDUSTRIES, SELF, new_prod_change_increase, getbits(extra_callback_info2, 4, 4)) {
+    0..4 : prod_increase_1;
+    5 : prod_decrease_1;
+    6..15 : return CB_RESULT_IND_PROD_NO_CHANGE;
+    return CB_FAILED;
+}
+
+// jrook 20190727
+// 5/16 chance decrease 1, 1/16 increase 1
+switch (FEAT_INDUSTRIES, SELF, new_prod_change_decrease, getbits(extra_callback_info2, 4, 4)) {
+    0..4 : prod_decrease_1;
+    5 : prod_increase_1;
+    6..15 : return CB_RESULT_IND_PROD_NO_CHANGE;
+    return CB_FAILED;
+}
+
+// jrook 20190727
+// if transp % > 64, then 5/16 chance increase 1, 1/16 decrease 1
+// else 5/16 chance decrease 1, 1/16 increase 1
+switch (FEAT_INDUSTRIES, SELF, production_change_1_cargo_change, transported_last_month_pct_1) {
+    0..64 : new_prod_change_decrease;
+    65..100 : new_prod_change_increase;
+    return CB_FAILED;
+}
+
+/*
+switch (FEAT_INDUSTRIES, SELF, production_change_1_cargo_change, transported_last_month_pct_1) {
+    0..49 : new_prod_change_poor;
+    50..74 : new_prod_change_good;
+    75..100 : new_prod_change_great;
+    return CB_FAILED;
+}
+*/
+
+switch (FEAT_INDUSTRIES, SELF, production_change_1_cargo_c, getbits(extra_callback_info2, 0, 4)) {
+ // jrook 20190727, prod change is now 50/50
+ //0..3 : production_change_1_cargo_change;
+ 0..7 : production_change_1_cargo_change;
+ //4..15 : return CB_RESULT_IND_PROD_NO_CHANGE;
+ 8..15 : return CB_RESULT_IND_PROD_NO_CHANGE;
+ return CB_FAILED;
+}
+
+// check if any cargo was transported last month
+// if yes, reset closure counter
+// if no, increase closure counter by 1
+// on a production change, close after the closure protection period has passed without a cargo pickup
+switch (FEAT_INDUSTRIES, SELF, production_change_1_cargo_b, STORE_PERM( ((transported_last_month_1 > 0) ? 0 : LOAD_PERM(0x00)+1), 0x00 )) {
+ production_change_1_cargo_c;
+}
+
+// continue production change iff industry has been initialised
+switch (FEAT_INDUSTRIES, SELF, production_change_1_cargo_a, (LOAD_PERM(0x0F) == 1)) {
+ 0: return CB_RESULT_IND_PROD_NO_CHANGE;
+ 1: production_change_1_cargo_b;
+}
+
+switch (FEAT_INDUSTRIES, SELF, production_change_1_cargo, [STORE_PERM(0, 0x06), STORE_PERM(getbits(extra_callback_info2, 0, 4), 4), STORE_PERM(getbits(extra_callback_info2, 4, 4), 5)]) {
+ production_change_1_cargo_a;
+}
+# 13 "wannaroo-tourist-set.pnml" 2
+# 1 "src/tile_industry_check.pnml" 1
+/* tile_industry_check.pnml */
+
+/*
+    License: GPL v2
+    https://github.com/jrook1445/wannaroo-tourist-set
+*/
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_255, nearby_tile_class(-8, -8)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_flat_check;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_254, nearby_tile_class(-8, -7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_255;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_253, nearby_tile_class(-8, -6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_254;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_252, nearby_tile_class(-8, -5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_253;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_251, nearby_tile_class(-8, -4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_252;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_250, nearby_tile_class(-8, -3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_251;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_249, nearby_tile_class(-8, -2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_250;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_248, nearby_tile_class(-8, -1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_249;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_247, nearby_tile_class(-8, 0)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_248;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_246, nearby_tile_class(-8, 1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_247;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_245, nearby_tile_class(-8, 2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_246;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_244, nearby_tile_class(-8, 3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_245;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_243, nearby_tile_class(-8, 4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_244;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_242, nearby_tile_class(-8, 5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_243;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_241, nearby_tile_class(-8, 6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_242;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_240, nearby_tile_class(-8, 7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_241;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_239, nearby_tile_class(-7, -8)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_240;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_238, nearby_tile_class(-7, -7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_239;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_237, nearby_tile_class(-7, -6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_238;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_236, nearby_tile_class(-7, -5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_237;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_235, nearby_tile_class(-7, -4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_236;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_234, nearby_tile_class(-7, -3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_235;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_233, nearby_tile_class(-7, -2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_234;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_232, nearby_tile_class(-7, -1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_233;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_231, nearby_tile_class(-7, 0)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_232;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_230, nearby_tile_class(-7, 1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_231;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_229, nearby_tile_class(-7, 2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_230;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_228, nearby_tile_class(-7, 3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_229;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_227, nearby_tile_class(-7, 4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_228;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_226, nearby_tile_class(-7, 5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_227;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_225, nearby_tile_class(-7, 6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_226;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_224, nearby_tile_class(-7, 7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_225;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_223, nearby_tile_class(-6, -8)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_224;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_222, nearby_tile_class(-6, -7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_223;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_221, nearby_tile_class(-6, -6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_222;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_220, nearby_tile_class(-6, -5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_221;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_219, nearby_tile_class(-6, -4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_220;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_218, nearby_tile_class(-6, -3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_219;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_217, nearby_tile_class(-6, -2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_218;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_216, nearby_tile_class(-6, -1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_217;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_215, nearby_tile_class(-6, 0)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_216;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_214, nearby_tile_class(-6, 1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_215;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_213, nearby_tile_class(-6, 2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_214;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_212, nearby_tile_class(-6, 3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_213;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_211, nearby_tile_class(-6, 4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_212;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_210, nearby_tile_class(-6, 5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_211;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_209, nearby_tile_class(-6, 6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_210;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_208, nearby_tile_class(-6, 7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_209;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_207, nearby_tile_class(-5, -8)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_208;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_206, nearby_tile_class(-5, -7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_207;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_205, nearby_tile_class(-5, -6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_206;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_204, nearby_tile_class(-5, -5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_205;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_203, nearby_tile_class(-5, -4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_204;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_202, nearby_tile_class(-5, -3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_203;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_201, nearby_tile_class(-5, -2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_202;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_200, nearby_tile_class(-5, -1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_201;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_199, nearby_tile_class(-5, 0)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_200;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_198, nearby_tile_class(-5, 1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_199;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_197, nearby_tile_class(-5, 2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_198;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_196, nearby_tile_class(-5, 3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_197;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_195, nearby_tile_class(-5, 4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_196;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_194, nearby_tile_class(-5, 5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_195;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_193, nearby_tile_class(-5, 6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_194;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_192, nearby_tile_class(-5, 7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_193;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_191, nearby_tile_class(-4, -8)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_192;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_190, nearby_tile_class(-4, -7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_191;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_189, nearby_tile_class(-4, -6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_190;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_188, nearby_tile_class(-4, -5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_189;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_187, nearby_tile_class(-4, -4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_188;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_186, nearby_tile_class(-4, -3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_187;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_185, nearby_tile_class(-4, -2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_186;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_184, nearby_tile_class(-4, -1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_185;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_183, nearby_tile_class(-4, 0)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_184;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_182, nearby_tile_class(-4, 1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_183;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_181, nearby_tile_class(-4, 2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_182;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_180, nearby_tile_class(-4, 3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_181;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_179, nearby_tile_class(-4, 4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_180;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_178, nearby_tile_class(-4, 5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_179;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_177, nearby_tile_class(-4, 6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_178;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_176, nearby_tile_class(-4, 7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_177;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_175, nearby_tile_class(-3, -8)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_176;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_174, nearby_tile_class(-3, -7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_175;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_173, nearby_tile_class(-3, -6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_174;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_172, nearby_tile_class(-3, -5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_173;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_171, nearby_tile_class(-3, -4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_172;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_170, nearby_tile_class(-3, -3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_171;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_169, nearby_tile_class(-3, -2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_170;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_168, nearby_tile_class(-3, -1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_169;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_167, nearby_tile_class(-3, 0)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_168;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_166, nearby_tile_class(-3, 1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_167;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_165, nearby_tile_class(-3, 2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_166;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_164, nearby_tile_class(-3, 3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_165;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_163, nearby_tile_class(-3, 4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_164;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_162, nearby_tile_class(-3, 5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_163;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_161, nearby_tile_class(-3, 6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_162;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_160, nearby_tile_class(-3, 7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_161;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_159, nearby_tile_class(-2, -8)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_160;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_158, nearby_tile_class(-2, -7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_159;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_157, nearby_tile_class(-2, -6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_158;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_156, nearby_tile_class(-2, -5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_157;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_155, nearby_tile_class(-2, -4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_156;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_154, nearby_tile_class(-2, -3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_155;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_153, nearby_tile_class(-2, -2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_154;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_152, nearby_tile_class(-2, -1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_153;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_151, nearby_tile_class(-2, 0)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_152;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_150, nearby_tile_class(-2, 1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_151;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_149, nearby_tile_class(-2, 2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_150;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_148, nearby_tile_class(-2, 3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_149;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_147, nearby_tile_class(-2, 4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_148;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_146, nearby_tile_class(-2, 5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_147;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_145, nearby_tile_class(-2, 6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_146;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_144, nearby_tile_class(-2, 7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_145;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_143, nearby_tile_class(-1, -8)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_144;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_142, nearby_tile_class(-1, -7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_143;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_141, nearby_tile_class(-1, -6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_142;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_140, nearby_tile_class(-1, -5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_141;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_139, nearby_tile_class(-1, -4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_140;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_138, nearby_tile_class(-1, -3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_139;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_137, nearby_tile_class(-1, -2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_138;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_136, nearby_tile_class(-1, -1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_137;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_135, nearby_tile_class(-1, 0)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_136;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_134, nearby_tile_class(-1, 1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_135;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_133, nearby_tile_class(-1, 2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_134;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_132, nearby_tile_class(-1, 3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_133;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_131, nearby_tile_class(-1, 4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_132;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_130, nearby_tile_class(-1, 5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_131;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_129, nearby_tile_class(-1, 6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_130;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_128, nearby_tile_class(-1, 7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_129;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_127, nearby_tile_class(0, -8)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_128;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_126, nearby_tile_class(0, -7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_127;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_125, nearby_tile_class(0, -6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_126;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_124, nearby_tile_class(0, -5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_125;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_123, nearby_tile_class(0, -4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_124;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_122, nearby_tile_class(0, -3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_123;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_121, nearby_tile_class(0, -2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_122;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_120, nearby_tile_class(0, -1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_121;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_119, nearby_tile_class(0, 1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_120;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_118, nearby_tile_class(0, 2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_119;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_117, nearby_tile_class(0, 3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_118;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_116, nearby_tile_class(0, 4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_117;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_115, nearby_tile_class(0, 5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_116;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_114, nearby_tile_class(0, 6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_115;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_113, nearby_tile_class(0, 7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_114;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_112, nearby_tile_class(1, -8)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_113;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_111, nearby_tile_class(1, -7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_112;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_110, nearby_tile_class(1, -6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_111;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_109, nearby_tile_class(1, -5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_110;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_108, nearby_tile_class(1, -4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_109;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_107, nearby_tile_class(1, -3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_108;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_106, nearby_tile_class(1, -2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_107;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_105, nearby_tile_class(1, -1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_106;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_104, nearby_tile_class(1, 0)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_105;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_103, nearby_tile_class(1, 1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_104;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_102, nearby_tile_class(1, 2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_103;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_101, nearby_tile_class(1, 3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_102;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_100, nearby_tile_class(1, 4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_101;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_99, nearby_tile_class(1, 5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_100;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_98, nearby_tile_class(1, 6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_99;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_97, nearby_tile_class(1, 7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_98;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_96, nearby_tile_class(2, -8)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_97;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_95, nearby_tile_class(2, -7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_96;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_94, nearby_tile_class(2, -6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_95;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_93, nearby_tile_class(2, -5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_94;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_92, nearby_tile_class(2, -4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_93;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_91, nearby_tile_class(2, -3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_92;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_90, nearby_tile_class(2, -2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_91;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_89, nearby_tile_class(2, -1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_90;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_88, nearby_tile_class(2, 0)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_89;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_87, nearby_tile_class(2, 1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_88;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_86, nearby_tile_class(2, 2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_87;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_85, nearby_tile_class(2, 3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_86;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_84, nearby_tile_class(2, 4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_85;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_83, nearby_tile_class(2, 5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_84;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_82, nearby_tile_class(2, 6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_83;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_81, nearby_tile_class(2, 7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_82;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_80, nearby_tile_class(3, -8)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_81;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_79, nearby_tile_class(3, -7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_80;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_78, nearby_tile_class(3, -6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_79;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_77, nearby_tile_class(3, -5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_78;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_76, nearby_tile_class(3, -4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_77;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_75, nearby_tile_class(3, -3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_76;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_74, nearby_tile_class(3, -2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_75;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_73, nearby_tile_class(3, -1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_74;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_72, nearby_tile_class(3, 0)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_73;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_71, nearby_tile_class(3, 1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_72;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_70, nearby_tile_class(3, 2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_71;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_69, nearby_tile_class(3, 3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_70;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_68, nearby_tile_class(3, 4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_69;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_67, nearby_tile_class(3, 5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_68;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_66, nearby_tile_class(3, 6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_67;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_65, nearby_tile_class(3, 7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_66;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_64, nearby_tile_class(4, -8)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_65;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_63, nearby_tile_class(4, -7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_64;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_62, nearby_tile_class(4, -6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_63;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_61, nearby_tile_class(4, -5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_62;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_60, nearby_tile_class(4, -4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_61;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_59, nearby_tile_class(4, -3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_60;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_58, nearby_tile_class(4, -2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_59;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_57, nearby_tile_class(4, -1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_58;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_56, nearby_tile_class(4, 0)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_57;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_55, nearby_tile_class(4, 1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_56;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_54, nearby_tile_class(4, 2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_55;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_53, nearby_tile_class(4, 3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_54;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_52, nearby_tile_class(4, 4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_53;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_51, nearby_tile_class(4, 5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_52;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_50, nearby_tile_class(4, 6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_51;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_49, nearby_tile_class(4, 7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_50;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_48, nearby_tile_class(5, -8)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_49;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_47, nearby_tile_class(5, -7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_48;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_46, nearby_tile_class(5, -6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_47;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_45, nearby_tile_class(5, -5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_46;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_44, nearby_tile_class(5, -4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_45;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_43, nearby_tile_class(5, -3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_44;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_42, nearby_tile_class(5, -2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_43;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_41, nearby_tile_class(5, -1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_42;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_40, nearby_tile_class(5, 0)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_41;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_39, nearby_tile_class(5, 1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_40;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_38, nearby_tile_class(5, 2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_39;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_37, nearby_tile_class(5, 3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_38;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_36, nearby_tile_class(5, 4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_37;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_35, nearby_tile_class(5, 5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_36;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_34, nearby_tile_class(5, 6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_35;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_33, nearby_tile_class(5, 7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_34;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_32, nearby_tile_class(6, -8)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_33;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_31, nearby_tile_class(6, -7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_32;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_30, nearby_tile_class(6, -6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_31;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_29, nearby_tile_class(6, -5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_30;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_28, nearby_tile_class(6, -4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_29;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_27, nearby_tile_class(6, -3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_28;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_26, nearby_tile_class(6, -2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_27;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_25, nearby_tile_class(6, -1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_26;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_24, nearby_tile_class(6, 0)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_25;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_23, nearby_tile_class(6, 1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_24;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_22, nearby_tile_class(6, 2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_23;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_21, nearby_tile_class(6, 3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_22;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_20, nearby_tile_class(6, 4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_21;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_19, nearby_tile_class(6, 5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_20;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_18, nearby_tile_class(6, 6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_19;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_17, nearby_tile_class(6, 7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_18;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_16, nearby_tile_class(7, -8)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_17;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_15, nearby_tile_class(7, -7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_16;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_14, nearby_tile_class(7, -6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_15;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_13, nearby_tile_class(7, -5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_14;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_12, nearby_tile_class(7, -4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_13;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_11, nearby_tile_class(7, -3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_12;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_10, nearby_tile_class(7, -2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_11;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_9, nearby_tile_class(7, -1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_10;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_8, nearby_tile_class(7, 0)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_9;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_7, nearby_tile_class(7, 1)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_8;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_6, nearby_tile_class(7, 2)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_7;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_5, nearby_tile_class(7, 3)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_6;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_4, nearby_tile_class(7, 4)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_5;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_3, nearby_tile_class(7, 5)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_4;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_2, nearby_tile_class(7, 6)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_3;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tile_industry_check_1, nearby_tile_class(7, 7)) {
+ TILE_CLASS_INDUSTRY: return string(STR_TILE_IND_CHECK_FAILED);
+ tile_industry_check_2;
+}
+# 14 "wannaroo-tourist-set.pnml" 2
+# 1 "src/tiles/hotel_tiles.pnml" 1
+/* hotel_tiles.pnml */
+
+/*
+    License: GPL v2
+    https://github.com/jrook1445/wannaroo-tourist-set
+*/
+
+spritelayout jrhotel_tile_N_spritelayout {
+ ground { sprite: GROUNDSPRITE_CONCRETE; }
+ building { sprite: (construction_state==0 ? 4471 : construction_state==3 ? 4475 : 4473); recolour_mode: RECOLOUR_REMAP; palette: PALETTE_STRUCT_YELLOW; }
+}
+
+spritelayout jrhotel_tile_E_spritelayout {
+ ground { sprite: GROUNDSPRITE_CONCRETE; }
+ building { sprite: (construction_state==0 ? 4472 : construction_state==3 ? 4476 : 4474); recolour_mode: RECOLOUR_REMAP; palette: PALETTE_STRUCT_YELLOW; }
+}
+
+spritelayout jrhotel_tile_S_spritelayout {
+ ground { sprite: GROUNDSPRITE_NORMAL; }
+ childsprite { sprite: 1455; yoffset: 6; }
+}
+
+spritelayout jrhotel_tile_W_spritelayout {
+ ground { sprite: GROUNDSPRITE_NORMAL; }
+ building { sprite: 1456; }
+}
+
+item (FEAT_INDUSTRYTILES, jrhotel_tile_N, 0) {
+ property {
+  substitute: 0;
+  accepted_cargos: [[TOUR, 8], [FOOD, 8], [BEER, 8]];
+ }
+ graphics {
+  tile_check: tile_industry_check_1;
+  jrhotel_tile_N_spritelayout;
+ }
+}
+
+item (FEAT_INDUSTRYTILES, jrhotel_tile_E, 1) {
+ property {
+  substitute: 0;
+  accepted_cargos: [[TOUR, 8], [FOOD, 8], [BEER, 8]];
+ }
+ graphics {
+  tile_check: tile_industry_check_1;
+  jrhotel_tile_E_spritelayout;
+ }
+}
+
+item (FEAT_INDUSTRYTILES, jrhotel_tile_S, 2) {
+ property {
+  substitute: 0;
+  accepted_cargos: [];
+ }
+ graphics {
+  tile_check: tile_industry_check_1;
+  jrhotel_tile_S_spritelayout;
+ }
+}
+
+item (FEAT_INDUSTRYTILES, jrhotel_tile_W, 3) {
+ property {
+  substitute: 0;
+  accepted_cargos: [];
+ }
+ graphics {
+  tile_check: tile_industry_check_1;
+  jrhotel_tile_W_spritelayout;
+ }
+}
+# 15 "wannaroo-tourist-set.pnml" 2
+# 1 "src/hotel.pnml" 1
+/* hotel.pnml */
+
+/*
+    License: GPL v2
+    https://github.com/jrook1445/wannaroo-tourist-set
+*/
+
+/*
+ 	perm storage
+
+	0x00: closure counter (see callbacks_production.pnml)
+	0x02: production rate (see callbacks_production.pnml)
+	0x06: count of tourists delivered during the month (see callbacks_production.pnml)
+	0x0F: industry initialised (0=no cargo ever delivered, 1=cargo delivery has occurred, now start closure counter)
+*/
+
+tilelayout jrhotel_tilelayout1 {
+ 0, 0: jrhotel_tile_N;
+ 0, 1: jrhotel_tile_E;
+ 1, 1: jrhotel_tile_S;
+ 1, 0: jrhotel_tile_W;
+}
+
+switch (FEAT_INDUSTRIES, SELF, industry_IND_HOTEL_monopoly_check, industry_town_count(0x00, -1)) { 0: ( (0x00 == 0x01) ? CB_RESULT_LOCATION_ALLOW : town_distance_check_20 ); return string(STR_ONE_INDUSTRY_PER_TOWN); } switch (FEAT_INDUSTRIES, SELF, check_nearby_IND_HOTEL_industry, industry_distance(0x00, -1)) { 0..49: return string(STR_INDUSTRY_TOO_CLOSE); industry_IND_HOTEL_monopoly_check; }
+
+switch (FEAT_INDUSTRIES, SELF, hotel_water_check, water_distance) {
+ 0..6: check_nearby_IND_HOTEL_industry;
+ return string(STR_HOTEL_WATER_CHECK_FAILED);
+}
+
+if (param_enable_hotel) {
+
+ item (FEAT_INDUSTRIES, industry_hotel, 0x00) {
+  property {
+   substitute: INDUSTRYTYPE_POWER_PLANT;
+   layouts: [jrhotel_tilelayout1];
+   life_type: IND_LIFE_TYPE_BLACK_HOLE;
+   // costs from FIRS 3 hotel
+   fund_cost_multiplier: 101;
+   remove_cost_multiplier: 0;
+   prod_cargo_types: [cargotype("TOUR")];
+   accept_cargo_types: [cargotype("TOUR"), cargotype("FOOD"), cargotype("BEER")];
+   prod_multiplier: [0, 0];
+   min_cargo_distr: 5;
+   input_multiplier_1: [0, 0];
+   input_multiplier_2: [0, 0];
+   input_multiplier_3: [0, 0];
+   conflicting_ind_types: [industry_type(IND_TYPE_NEW, 0x00), industry_type(IND_TYPE_NEW, 0x01), industry_type(IND_TYPE_NEW, 0x02)];
+   prob_map_gen: param_manual_placement ? 0 : 1;
+   prob_in_game: param_manual_placement ? 0 : 2;
+   prospect_chance: 1.0;
+   map_colour: 189;
+   name: string(STR_HOTEL_NAME);
+   nearby_station_name: string(STR_HOTEL_STATION_NAME);
+  }
+  graphics {
+   location_check: hotel_water_check;
+   build_prod_change: tourist_initial_prod_rate; //STORE_PERM(abs(extra_callback_info2%5)+4, 0x02);
+   produce_cargo_arrival: tourist_industry_cargo_arrival;
+         produce_256_ticks: produce_1_cargo;
+   monthly_prod_change: production_change_1_cargo;
+   random_prod_change: return CB_RESULT_IND_PROD_NO_CHANGE;
+   extra_text_industry: tourist_debug_text;
+   cargo_subtype_display: industry_remove_cargo_text;
+  }
+ }
+
+}
+# 16 "wannaroo-tourist-set.pnml" 2
+# 1 "src/tiles/tower_tiles.pnml" 1
+/* tower_tiles.pnml */
+
+/*
+    License: GPL v2
+    https://github.com/jrook1445/wannaroo-tourist-set
+*/
+
+spriteset (tower_building) {
+ [0, 0, 50, 83, -25, -55, NOANIM, "src/gfx/tower_sprite.png"]
+}
+
+spriteset (pavilion_building) {
+ [0, 0, 54, 81, -27, -53, NOANIM, "src/gfx/pavilion_sprite.png"]
+}
+
+spriteset (mayan_ruins_building) {
+ [0, 0, 60, 41, -29, -8, NOANIM, "src/gfx/mayan_ruins_sprite.png"]
+}
+
+spriteset (chichen_itza_ruins_building) {
+ [0, 0, 60, 43, -30, -11, NOANIM, "src/gfx/chichen_itza_ruins_sprite.png"]
+}
+
+spriteset (pyramid_beige_building) {
+ [0, 0, 60, 46, -30, -11, NOANIM, "src/gfx/pyramid_beige_sprite.png"]
+}
+
+spriteset (pyramid_brown_building) {
+ [0, 0, 60, 46, -30, -11, NOANIM, "src/gfx/pyramid_brown_sprite.png"]
+}
+
+spriteset (pyramid_tan_building) {
+ [0, 0, 60, 46, -30, -11, NOANIM, "src/gfx/pyramid_tan_sprite.png"]
+}
+
+spriteset (monument_building) {
+ [0, 0, 30, 48, -15, -21, NOANIM, "src/gfx/monument_sprite.png"]
+}
+
+/*
+spriteset (wickerman_building) {
+	[0, 0, 37, 84, -19, -57, NOANIM, "src/gfx/wickerman_sprite.png"]
+}
+*/
+
+spritelayout jrtower_tile_N_spritelayout { // tower
+ ground { sprite: GROUNDSPRITE_CONCRETE; }
+ //building { sprite: 4629; }
+ building { sprite: tower_building; }
+}
+
+spritelayout jrpavilion_tile_N_spritelayout { // pavilion
+ ground { sprite: GROUNDSPRITE_CONCRETE; }
+ //building { sprite: 4638; }
+ building { sprite: pavilion_building; }
+}
+
+spritelayout jrlodge_tile_N_spritelayout { // lodge
+ ground { sprite: GROUNDSPRITE_NORMAL; }
+ building { sprite: 4635; }
+}
+
+spritelayout jrlighthouse_tile_N_spritelayout { // lighthouse
+ ground { sprite: GROUNDSPRITE_NORMAL; }
+ building { sprite: 2602; xoffset: 5; yoffset: 5; }
+}
+
+spritelayout jrmayan_tile_N_spritelayout { // mayan ruins
+ ground { sprite: GROUNDSPRITE_NORMAL; }
+ building { sprite: mayan_ruins_building; }
+}
+
+spritelayout jrchichen_tile_N_spritelayout { // chichen itza ruins
+ ground { sprite: GROUNDSPRITE_NORMAL; }
+ building { sprite: chichen_itza_ruins_building; }
+}
+
+spritelayout jrpyramid_beige_tile_N_spritelayout { // pyramid, beige
+ ground { sprite: GROUNDSPRITE_NORMAL; }
+ building { sprite: pyramid_beige_building; }
+}
+
+spritelayout jrpyramid_brown_tile_N_spritelayout { // pyramid, brown
+ ground { sprite: GROUNDSPRITE_NORMAL; }
+ building { sprite: pyramid_brown_building; }
+}
+
+spritelayout jrpyramid_tan_tile_N_spritelayout { // pyramid, tan
+ ground { sprite: GROUNDSPRITE_NORMAL; }
+ building { sprite: pyramid_tan_building; }
+}
+
+spritelayout jrmonument_tile_N_spritelayout { // monument
+ ground { sprite: GROUNDSPRITE_NORMAL; }
+ building { sprite: monument_building; }
+}
+
+/*
+spritelayout jrwickerman_tile_N_spritelayout { // wicker man
+	ground { sprite: GROUNDSPRITE_NORMAL; }
+	building { sprite: wickerman_building; }
+}
+*/
+
+// check climate, nearby tiles to determine what kind of tower to build
+// temperate & arctic towers are the same
+
+// tower: any location
+// pavilion: any location
+// monument: any location
+// wicker man: any climate, sea coast only
+// lighthouse: any climate, sea coast only
+
+// lodge: temperate|arctic trees only
+
+// pyramid: tropic desert only
+// ruins: tropic trees only
+
+// temperate: check for trees, sea coast
+// arctic: check for trees, sea coast
+// tropic: check for desert, trees, sea coast
+
+random_switch (FEAT_INDUSTRYTILES, SELF, tower_chooser) {
+ 3: return jrtower_tile_N_spritelayout;
+ 2: return jrpavilion_tile_N_spritelayout;
+ 1: return jrmonument_tile_N_spritelayout;
+}
+
+random_switch (FEAT_INDUSTRYTILES, SELF, lodge_chooser) {
+ 15: return jrlodge_tile_N_spritelayout;
+ 1: return jrtower_tile_N_spritelayout;
+ 1: return jrpavilion_tile_N_spritelayout;
+ 1: return jrmonument_tile_N_spritelayout;
+}
+
+random_switch (FEAT_INDUSTRYTILES, SELF, mayan_chooser) {
+ 8: return jrmayan_tile_N_spritelayout;
+ 7: return jrchichen_tile_N_spritelayout;
+ 1: return jrtower_tile_N_spritelayout;
+ 1: return jrpavilion_tile_N_spritelayout;
+ 1: return jrmonument_tile_N_spritelayout;
+}
+
+random_switch (FEAT_INDUSTRYTILES, SELF, pyramid_chooser) {
+ 5: return jrpyramid_beige_tile_N_spritelayout;
+ 5: return jrpyramid_brown_tile_N_spritelayout;
+ 5: return jrpyramid_tan_tile_N_spritelayout;
+ 1: return jrtower_tile_N_spritelayout;
+ 1: return jrpavilion_tile_N_spritelayout;
+ 1: return jrmonument_tile_N_spritelayout;
+}
+
+random_switch (FEAT_INDUSTRYTILES, SELF, lighthouse_chooser) {
+ 15: return jrlighthouse_tile_N_spritelayout;
+ 1: return jrtower_tile_N_spritelayout;
+ 1: return jrpavilion_tile_N_spritelayout;
+ 1: return jrmonument_tile_N_spritelayout;
+ //1: return jrwickerman_tile_N_spritelayout;
+}
+
+//switch (FEAT_INDUSTRYTILES, SELF, tower_get_spritelayout_5, ( town_zone == 0 && nearby_tile_class(2, 0) == TILE_CLASS_TREES && nearby_tile_class(-2, 0) == TILE_CLASS_TREES && nearby_tile_class(0, 2) == TILE_CLASS_TREES && nearby_tile_class(0, -2) == TILE_CLASS_TREES ) ) {
+switch (FEAT_INDUSTRYTILES, SELF, tower_get_spritelayout_5, ( town_zone == 0 && nearby_tile_class(2, 0) == TILE_CLASS_TREES && nearby_tile_class(-2, 0) == TILE_CLASS_TREES && nearby_tile_class(0, 2) == TILE_CLASS_TREES && nearby_tile_class(0, -2) == TILE_CLASS_TREES ) ) {
+ 0: tower_chooser; // not sea, desert, or forest, so choose something else
+ 1: lodge_chooser; // chain to a random_switch here, weighted for the lodge but including others
+}
+
+//switch (FEAT_INDUSTRYTILES, SELF, tower_get_spritelayout_4, ( town_zone == 0 && climate == CLIMATE_TROPIC && nearby_tile_class(2, 0) == TILE_CLASS_TREES && nearby_tile_class(-2, 0) == TILE_CLASS_TREES && nearby_tile_class(0, 2) == TILE_CLASS_TREES && nearby_tile_class(0, -2) == TILE_CLASS_TREES ) ) {
+switch (FEAT_INDUSTRYTILES, SELF, tower_get_spritelayout_4, ( town_zone == 0 && climate == CLIMATE_TROPIC && nearby_tile_class(2, 0) == TILE_CLASS_TREES && nearby_tile_class(-2, 0) == TILE_CLASS_TREES && nearby_tile_class(0, 2) == TILE_CLASS_TREES && nearby_tile_class(0, -2) == TILE_CLASS_TREES ) ) {
+ 0: tower_get_spritelayout_5; // temperate/arctic tree check
+ 1: mayan_chooser;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tower_get_spritelayout_3, ( town_zone == 0 && nearby_tile_terrain_type(2, 0) == TILETYPE_DESERT && nearby_tile_terrain_type(-2, 0) == TILETYPE_DESERT && nearby_tile_terrain_type(0, 2) == TILETYPE_DESERT && nearby_tile_terrain_type(0, -2) == TILETYPE_DESERT && nearby_tile_terrain_type(3, 0) == TILETYPE_DESERT && nearby_tile_terrain_type(-3, 0) == TILETYPE_DESERT && nearby_tile_terrain_type(0, 3) == TILETYPE_DESERT && nearby_tile_terrain_type(0, -3) == TILETYPE_DESERT ) ) {
+ 0: tower_get_spritelayout_4; // tropic tree check
+ 1: pyramid_chooser;
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tower_get_spritelayout_2, ( nearby_tile_water_class(2, 0) == WATER_CLASS_SEA || nearby_tile_water_class(-2, 0) == WATER_CLASS_SEA || nearby_tile_water_class(0, 2) == WATER_CLASS_SEA || nearby_tile_water_class(0, -2) == WATER_CLASS_SEA || nearby_tile_water_class(3, 0) == WATER_CLASS_SEA || nearby_tile_water_class(-3, 0) == WATER_CLASS_SEA || nearby_tile_water_class(0, 3) == WATER_CLASS_SEA || nearby_tile_water_class(0, -3) == WATER_CLASS_SEA ) ) {
+ 0: tower_get_spritelayout_3;
+ 1: lighthouse_chooser; // chain to a random_switch here, weighted for the lighthouse but including others
+}
+
+switch (FEAT_INDUSTRYTILES, SELF, tower_get_spritelayout_1, nearby_tile_slope(0, 0)) {
+ SLOPE_FLAT: tower_get_spritelayout_2; // flat tile, so continue
+ 1..255: return string(STR_TILE_FLAT_CHECK_FAILED);
+}
+
+item (FEAT_INDUSTRYTILES, jrtower_tile_N, 4) {
+ property {
+  substitute: 0;
+  accepted_cargos: [[TOUR, 8]];
+ }
+ graphics {
+  tower_get_spritelayout_1;
+ }
+}
+# 17 "wannaroo-tourist-set.pnml" 2
+# 1 "src/tower.pnml" 1
+/* tower.pnml */
+
+/*
+    License: GPL v2
+    https://github.com/jrook1445/wannaroo-tourist-set
+*/
+
+/*
+ 	perm storage
+
+	0x00: closure counter (see callbacks_production.pnml)
+	0x02: production rate (see callbacks_production.pnml)
+	0x06: count of tourists delivered during the month (see callbacks_production.pnml)
+	0x0F: industry initialised (0=no cargo ever delivered, 1=cargo delivery has occurred, now start closure counter)
+*/
+
+tilelayout jrtower_tilelayout1 {
+ 0, 0: jrtower_tile_N;
+}
+
+switch (FEAT_INDUSTRIES, SELF, industry_IND_TOWER_monopoly_check, industry_town_count(0x01, -1)) { 0: ( (0x01 == 0x01) ? CB_RESULT_LOCATION_ALLOW : town_distance_check_20 ); return string(STR_ONE_INDUSTRY_PER_TOWN); } switch (FEAT_INDUSTRIES, SELF, check_nearby_IND_TOWER_industry, industry_distance(0x01, -1)) { 0..49: return string(STR_INDUSTRY_TOO_CLOSE); industry_IND_TOWER_monopoly_check; }
+
+// not using @ 20190213
+/*
+switch (FEAT_INDUSTRIES, SELF, tower_water_check, water_distance) {
+	0..12: check_nearby_IND_TOWER_industry;
+	return string(STR_TOWER_WATER_CHECK_FAILED);
+}
+*/
+
+if (param_enable_tower) {
+
+ item (FEAT_INDUSTRIES, industry_tower, 0x01) {
+  property {
+   substitute: INDUSTRYTYPE_POWER_PLANT;
+   layouts: [jrtower_tilelayout1];
+   life_type: IND_LIFE_TYPE_BLACK_HOLE;
+   // costs from FIRS 3 hotel
+   fund_cost_multiplier: 101;
+   remove_cost_multiplier: 0;
+   prod_cargo_types: [cargotype("TOUR")];
+   accept_cargo_types: [cargotype("TOUR")];
+   prod_multiplier: [0, 0];
+   min_cargo_distr: 5;
+   input_multiplier_1: [0, 0];
+   input_multiplier_2: [0, 0];
+   input_multiplier_3: [0, 0];
+   conflicting_ind_types: [industry_type(IND_TYPE_NEW, 0x00), industry_type(IND_TYPE_NEW, 0x01), industry_type(IND_TYPE_NEW, 0x02)];
+   prob_map_gen: param_manual_placement ? 0 : 1;
+   prob_in_game: param_manual_placement ? 0 : 2;
+   prospect_chance: 1.0;
+   map_colour: 186;
+   name: string(STR_TOWER_NAME);
+   nearby_station_name: string(STR_TOWER_STATION_NAME);
+  }
+  graphics {
+   location_check: check_nearby_IND_TOWER_industry;
+   build_prod_change: tourist_initial_prod_rate; //STORE_PERM(abs(extra_callback_info2%5)+4, 0x02);
+                 produce_cargo_arrival: tourist_industry_cargo_arrival;
+                 produce_256_ticks: produce_1_cargo;
+                 monthly_prod_change: production_change_1_cargo;
+                 random_prod_change: return CB_RESULT_IND_PROD_NO_CHANGE;
+   extra_text_industry: tourist_debug_text;
+   cargo_subtype_display: industry_remove_cargo_text;
+  }
+ }
+
+}
+# 18 "wannaroo-tourist-set.pnml" 2
+# 1 "src/tiles/town_square_tiles.pnml" 1
+/* town_square_tiles.pnml */
+
+/*
+    License: GPL v2
+    https://github.com/jrook1445/wannaroo-tourist-set
+*/
+
+spritelayout jrtownsquare_tile_N_spritelayout {
+ ground { sprite: 4675; }
+ building { sprite: 4091; xoffset: 0; yoffset: -16; }
+ building { sprite: 4090; xoffset: -16; yoffset: 0; }
+ building { sprite: 1877; xoffset: 0; }
+ building { sprite: 1877; xoffset: 6; }
+ building { sprite: 1877; xoffset: 11; }
+ building { sprite: 1877; yoffset: 6; }
+ building { sprite: 1877; yoffset: 11; }
+}
+
+spritelayout jrtownsquare_tile_E_spritelayout {
+ ground { sprite: 4675; }
+ building { sprite: 4091; xoffset: 0; yoffset: 0; }
+ building { sprite: 4090; xoffset: -16; yoffset: 0; }
+ building { sprite: 1877; yoffset: 0; }
+ building { sprite: 1877; yoffset: 6; }
+ building { sprite: 1877; yoffset: 11; }
+ //building { sprite: 2000; yoffset: 10; }
+ building { sprite: 1877; xoffset: 11; yoffset: 11; }
+ building { sprite: 1877; xoffset: 6; yoffset: 11; }
+}
+
+spritelayout jrtownsquare_tile_S_spritelayout {
+ ground { sprite: 4675; }
+ building { sprite: 4091; xoffset: 0; yoffset: 0; }
+ building { sprite: 4090; xoffset: 0; yoffset: 0; }
+ building { sprite: 1455; xoffset: -7; yoffset: -7; }
+ building { sprite: 1877; xoffset: 11; }
+ building { sprite: 1877; xoffset: 11; yoffset: 5; }
+ building { sprite: 1877; xoffset: 11; yoffset: 11; }
+ building { sprite: 1877; xoffset: 5; yoffset: 11; }
+ building { sprite: 1877; xoffset: 0; yoffset: 11; }
+}
+
+spritelayout jrtownsquare_tile_W_spritelayout {
+ ground { sprite: 4675; }
+ building { sprite: 4091; xoffset: 0; yoffset: -16; }
+ building { sprite: 4090; xoffset: 0; yoffset: 0; }
+ building { sprite: 1877; xoffset: 0; }
+ building { sprite: 1877; xoffset: 6; }
+ building { sprite: 1877; xoffset: 11; }
+ building { sprite: 1877; xoffset: 11; yoffset: 6; }
+ building { sprite: 1877; xoffset: 11; yoffset: 11; }
+ //building { sprite: 2000; xoffset: 10; }
+}
+
+item (FEAT_INDUSTRYTILES, jrtownsquare_tile_N, 5) {
+ property {
+  substitute: 0;
+  accepted_cargos: [[TOUR, 8], [GOOD, 8], [BEER, 8]];
+ }
+ graphics {
+  jrtownsquare_tile_N_spritelayout;
+ }
+}
+
+item (FEAT_INDUSTRYTILES, jrtownsquare_tile_E, 6) {
+ property {
+  substitute: 0;
+  accepted_cargos: [[TOUR, 8], [GOOD, 8], [BEER, 8]];
+ }
+ graphics {
+  jrtownsquare_tile_E_spritelayout;
+ }
+}
+
+item (FEAT_INDUSTRYTILES, jrtownsquare_tile_S, 7) {
+ property {
+  substitute: 0;
+  accepted_cargos: [[TOUR, 8], [GOOD, 8], [BEER, 8]];
+ }
+ graphics {
+  jrtownsquare_tile_S_spritelayout;
+ }
+}
+
+item (FEAT_INDUSTRYTILES, jrtownsquare_tile_W, 8) {
+ property {
+  substitute: 0;
+  accepted_cargos: [[TOUR, 8], [GOOD, 8], [BEER, 8]];
+ }
+ graphics {
+  jrtownsquare_tile_W_spritelayout;
+ }
+}
+# 19 "wannaroo-tourist-set.pnml" 2
+# 1 "src/town_square.pnml" 1
+/* town_square.pnml */
+
+/*
+    License: GPL v2
+    https://github.com/jrook1445/wannaroo-tourist-set
+*/
+
+/*
+ 	perm storage
+
+	0x00: closure counter (see callbacks_production.pnml)
+	0x02: production rate (see callbacks_production.pnml)
+	0x06: count of tourists delivered during the month (see callbacks_production.pnml)
+	0x0F: industry initialised (0=no cargo ever delivered, 1=cargo delivery has occurred, now start closure counter)
+*/
+
+tilelayout jrtownsquare_tilelayout1 {
+ 0, 0: jrtownsquare_tile_N;
+ 0, 1: jrtownsquare_tile_E;
+ 1, 1: jrtownsquare_tile_S;
+ 1, 0: jrtownsquare_tile_W;
+}
+
+switch (FEAT_INDUSTRIES, SELF, industry_IND_TOWN_SQUARE_monopoly_check, industry_town_count(0x02, -1)) { 0: town_below_2000; return string(STR_ONE_INDUSTRY_PER_TOWN); } switch (FEAT_INDUSTRIES, SELF, check_nearby_IND_TOWN_SQUARE_industry, industry_distance(0x02, -1)) { 0..19: return string(STR_TOWN_INDUSTRY_TOO_CLOSE); industry_IND_TOWN_SQUARE_monopoly_check; }
+
+if (param_enable_town_square) {
+
+ item (FEAT_INDUSTRIES, industry_town_square, 0x02) {
+  property {
+   substitute: INDUSTRYTYPE_POWER_PLANT;
+   layouts: [jrtownsquare_tilelayout1];
+   life_type: IND_LIFE_TYPE_BLACK_HOLE;
+   // costs from FIRS 3 hotel
+   fund_cost_multiplier: 101;
+   remove_cost_multiplier: 0;
+   prod_cargo_types: [cargotype("TOUR")];
+   accept_cargo_types: [cargotype("TOUR"), cargotype("GOOD"), cargotype("BEER")];
+   prod_multiplier: [0, 0];
+   min_cargo_distr: 5;
+   input_multiplier_1: [0, 0];
+   input_multiplier_2: [0, 0];
+   input_multiplier_3: [0, 0];
+   conflicting_ind_types: [industry_type(IND_TYPE_NEW, 0x00), industry_type(IND_TYPE_NEW, 0x01), industry_type(IND_TYPE_NEW, 0x02)];
+   prob_map_gen: param_manual_placement ? 0 : 1;
+   prob_in_game: param_manual_placement ? 0 : 2;
+   prospect_chance: 1.0;
+   map_colour: 37;
+   spec_flags: bitmask(IND_FLAG_ONLY_IN_TOWNS);
+   name: string(STR_TOWN_SQUARE_NAME);
+   nearby_station_name: string(STR_TOWN_SQUARE_STATION_NAME);
+  }
+  graphics {
+   location_check: check_nearby_IND_TOWN_SQUARE_industry;
+   build_prod_change: tourist_initial_prod_rate; //STORE_PERM(abs(extra_callback_info2%5)+4, 0x02);
+         produce_cargo_arrival: tourist_industry_cargo_arrival;
+         produce_256_ticks: produce_1_cargo;
+         monthly_prod_change: production_change_1_cargo;
+            random_prod_change: return CB_RESULT_IND_PROD_NO_CHANGE;
+   extra_text_industry: tourist_debug_text;
+   cargo_subtype_display: industry_remove_cargo_text;
+  }
+ }
+
+}
+# 20 "wannaroo-tourist-set.pnml" 2
+# 1 "src/houses.pnml" 1
+/* houses.pnml */
+
+/*
+    License: GPL v2
+    https://github.com/jrook1445/wannaroo-tourist-set
+*/
+
+spritelayout cabin_layout {
+    ground { sprite: GROUNDSPRITE_CONCRETE; }
+    building { sprite: 4635; }
+}
+
+spritelayout regular_house_layout {
+    ground { sprite: GROUNDSPRITE_CONCRETE; }
+    //building { sprite: 4647; recolour_mode: RECOLOUR_REMAP; palette: PALETTE_USE_DEFAULT; }
+    building { sprite: 4641; recolour_mode: RECOLOUR_REMAP; palette: PALETTE_USE_DEFAULT; }
+}
+
+spritelayout tower_block_layout {
+    ground { sprite: GROUNDSPRITE_CONCRETE; }
+    building { sprite: 4650; }
+}
+
+spritelayout flats_layout {
+    ground { sprite: GROUNDSPRITE_CONCRETE; }
+    building { sprite: 4659; }
+}
+
+switch (FEAT_HOUSES, SELF, check_tour_house_distance, nearest_house_matching_criterion(7, SEARCH_HOUSE_BY_CLASS)) {
+    0: return 1;
+    return 0;
+}
+
+switch (FEAT_HOUSES, PARENT, check_town_population, population) {
+    0..1199: return 0;
+    return check_tour_house_distance;
+}
+
+switch (FEAT_HOUSES, SELF, check_tower_count, same_house_count_town) {
+    0: check_town_population;
+    return 0;
+}
+
+switch (FEAT_HOUSES, SELF, check_house_count, same_house_count_town) {
+    0: check_tour_house_distance;
+    return 0;
+}
+
+switch (FEAT_HOUSES, SELF, house_produce_tour, getbits(extra_callback_info1, 0, 8)) {
+    0: (TOUR * 256) + 8 + extra_callback_info2%4;
+    return CB_RESULT_HOUSE_NO_MORE_PRODUCTION;
+}
+
+switch (FEAT_HOUSES, SELF, tower_produce_tour, getbits(extra_callback_info1, 0, 8)) {
+    0: (TOUR * 256) + 20 + extra_callback_info2%5;
+    return CB_RESULT_HOUSE_NO_MORE_PRODUCTION;
+}
+
+if (param_enable_houses) {
+
+item (FEAT_HOUSES, house_cabin, 0) {
+    property {
+        substitute: 24;
+        name: string(STR_HOUSE_NAME_CABIN);
+        building_flags: bitmask(HOUSE_FLAG_PROTECTED);
+        population: 15;
+        mail_multiplier: 6;
+        accepted_cargos: [[PASS, 3], [MAIL, 1], [TOUR, 8]];
+        probability: 1;
+        years_available: [1930, 65535];
+        minimum_lifetime: 255;
+        availability_mask: [bitmask(TOWNZONE_OUTER_SUBURB, TOWNZONE_OUTSKIRT, TOWNZONE_EDGE), ALL_CLIMATES];
+        building_class: 0;
+    }
+    graphics {
+        default: cabin_layout;
+        autoslope: CB_RESULT_AUTOSLOPE;
+        construction_check: check_house_count;
+        destruction: 0;
+        protection: 1;
+        cargo_production: house_produce_tour;
+    }
+}
+
+item (FEAT_HOUSES, house_regular_house, 1) {
+    property {
+        substitute: 24;
+        name: string(STR_HOUSE_NAME_REGULAR_HOUSE);
+        building_flags: bitmask(HOUSE_FLAG_PROTECTED);
+        population: 15;
+        mail_multiplier: 6;
+        accepted_cargos: [[PASS, 3], [MAIL, 1], [TOUR, 8]];
+        probability: 1;
+        years_available: [1930, 65535];
+        minimum_lifetime: 255;
+        availability_mask: [bitmask(TOWNZONE_OUTER_SUBURB, TOWNZONE_OUTSKIRT, TOWNZONE_EDGE), ALL_CLIMATES];
+        building_class: 0;
+        random_colours: [COLOUR_CREAM, COLOUR_BROWN, COLOUR_GREY, COLOUR_DARK_GREEN];
+    }
+    graphics {
+        default: regular_house_layout;
+        autoslope: CB_RESULT_AUTOSLOPE;
+        construction_check: check_house_count;
+        destruction: 0;
+        protection: 1;
+        cargo_production: house_produce_tour;
+    }
+}
+
+item (FEAT_HOUSES, house_tower_block, 2) {
+    property {
+        substitute: 14;
+        name: string(STR_HOUSE_NAME_TOWER_BLOCK);
+        building_flags: bitmask(HOUSE_FLAG_PROTECTED);
+        population: 95;
+        mail_multiplier: 48;
+        //accepted_cargos:    [[PASS, 6], [MAIL, 2], [GOOD, 3], [FOOD, 3], [TOUR, 8]];
+        accepted_cargos: [[PASS, 6], [MAIL, 2], [TOUR, 8]];
+        probability: 1;
+        years_available: [1930, 65535];
+        minimum_lifetime: 255;
+        availability_mask: [bitmask(TOWNZONE_CENTRE, TOWNZONE_INNER_SUBURB, TOWNZONE_OUTER_SUBURB, TOWNZONE_OUTSKIRT), ALL_CLIMATES];
+        building_class: 0;
+    }
+    graphics {
+        default: tower_block_layout;
+        autoslope: CB_RESULT_AUTOSLOPE;
+        construction_check: check_tower_count;
+        destruction: 0;
+        protection: 1;
+        cargo_production: tower_produce_tour;
+    }
+}
+
+item (FEAT_HOUSES, house_flats, 3) {
+    property {
+        substitute: 14;
+        name: string(STR_HOUSE_NAME_FLATS);
+        building_flags: bitmask(HOUSE_FLAG_PROTECTED);
+        population: 95;
+        mail_multiplier: 48;
+        //accepted_cargos:    [[PASS, 6], [MAIL, 2], [GOOD, 3], [FOOD, 3], [TOUR, 8]];
+        accepted_cargos: [[PASS, 6], [MAIL, 2], [TOUR, 8]];
+        probability: 1;
+        years_available: [1930, 65535];
+        minimum_lifetime: 255;
+        availability_mask: [bitmask(TOWNZONE_CENTRE, TOWNZONE_INNER_SUBURB, TOWNZONE_OUTER_SUBURB, TOWNZONE_OUTSKIRT), ALL_CLIMATES];
+        building_class: 0;
+    }
+    graphics {
+        default: flats_layout;
+        autoslope: CB_RESULT_AUTOSLOPE;
+        construction_check: check_tower_count;
+        destruction: 0;
+        protection: 1;
+        cargo_production: tower_produce_tour;
+    }
+}
+
+}
+# 21 "wannaroo-tourist-set.pnml" 2
