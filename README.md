@@ -4,7 +4,7 @@ NewGRF for OpenTTD - Tourist industries
 
 1. About
 
-    Tourist industries for OpenTTD, inspired by WhiteHand's tourist set and tourist-accepting houses in ECS Houses, Swedish Houses, FIRS 3 Hotel.
+    Tourist industries for OpenTTD, inspired by FIRS 3 Hotel, WhiteHand's tourist set, and tourist-accepting houses in ECS Houses, Swedish Houses.
 
 1. Compatibility
 
@@ -61,7 +61,7 @@ NewGRF for OpenTTD - Tourist industries
 
     NML and NFO: with many thanks to all the developers/contributors of NML, NFO, and the documentation/newgrf spec website at https://newgrf-specs.tt-wiki.net/wiki/Main_Page
 
-    Inspiration: WhiteHand's tourist set, ECS Houses, Swedish Houses, FIRS 3 Hotel
+    Inspiration: FIRS 3 Hotel, WhiteHand's tourist set, ECS Houses, Swedish Houses
 
 :peace_symbol:
 
