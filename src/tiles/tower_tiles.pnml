@@ -51,8 +51,8 @@ spritelayout jrtower_tile_N_spritelayout { // tower
 
 spritelayout jrpavilion_tile_N_spritelayout { // pavilion
 	ground { sprite: GROUNDSPRITE_CONCRETE; }
-	//building { sprite: 4638; }
-	building { sprite: pavilion_building; }
+	building { sprite: 4638; }
+	//building { sprite: pavilion_building; }
 }
 
 spritelayout jrlodge_tile_N_spritelayout { // lodge
