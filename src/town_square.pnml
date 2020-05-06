@@ -30,6 +30,7 @@ if (TOWN_SQUARE_ENABLED) {
 			substitute:		INDUSTRYTYPE_POWER_PLANT;
 			layouts:		[jrtownsquare_tilelayout1];
 			life_type:		IND_LIFE_TYPE_BLACK_HOLE;
+			spec_flags:     bitmask(IND_FLAG_RANDOM_BITS_IN_PRODUCTION_CALLBACK);
 			// costs from FIRS 3 hotel
 			fund_cost_multiplier:	101;
 			remove_cost_multiplier:	0;

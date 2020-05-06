@@ -20,9 +20,9 @@
 
 */
 
-produce(tourist_industry_cargo_arrival, [STORE_PERM(LOAD_PERM(0x06)+waiting_cargo_1, 0x06), STORE_PERM(1, 0x0F), waiting_cargo_1], waiting_cargo_2, waiting_cargo_3, 0, 0, 0);
+produce(tourist_industry_cargo_arrival, [STORE_PERM(LOAD_PERM(0x06)+waiting_cargo_1, 0x06), STORE_PERM(1, 0x0F), waiting_cargo_1], waiting_cargo_2, waiting_cargo_3, waiting_cargo_1/4, 0, 0);
 
-produce(produce_1_cargo, 0, 0, 0, LOAD_PERM(0x02), 0, 0);
+produce(produce_1_cargo, 0, 0, 0, LOAD_PERM(0x02)+extra_callback_info1%4, 0, 0);
 
 /* on a production change, close after the closure protection period has passed without a cargo pickup */
 switch (FEAT_INDUSTRIES, SELF, do_production_change, (param_closure_protect_time>0 && LOAD_PERM(0x00)>param_closure_protect_time) ) {
@@ -30,6 +30,7 @@ switch (FEAT_INDUSTRIES, SELF, do_production_change, (param_closure_protect_time
     return CB_RESULT_IND_PROD_NO_CHANGE;
 }
 
+/*
 switch (FEAT_INDUSTRIES, SELF, prod_increase_3, [
     STORE_PERM(min(LOAD_PERM(0x02)+3, param_max_tour_prod/8), 0x02)]) {
     do_production_change;
@@ -38,6 +39,8 @@ switch (FEAT_INDUSTRIES, SELF, prod_increase_2, [
     STORE_PERM(min(LOAD_PERM(0x02)+2, param_max_tour_prod/8), 0x02)]) {
     do_production_change;
 }
+*/
+
 switch (FEAT_INDUSTRIES, SELF, prod_increase_1, [
     STORE_PERM(min(LOAD_PERM(0x02)+1, param_max_tour_prod/8), 0x02)]) {
     do_production_change;
@@ -45,6 +48,8 @@ switch (FEAT_INDUSTRIES, SELF, prod_increase_1, [
 
 // jrook 20190727
 // lowest prod rate shall be 4
+
+/*
 switch (FEAT_INDUSTRIES, SELF, prod_decrease_3, [
     STORE_PERM(max(LOAD_PERM(0x02)-3, 4), 0x02)]) {
     do_production_change;
@@ -53,11 +58,14 @@ switch (FEAT_INDUSTRIES, SELF, prod_decrease_2, [
     STORE_PERM(max(LOAD_PERM(0x02)-2, 4), 0x02)]) {
     do_production_change;
 }
+*/
+
 switch (FEAT_INDUSTRIES, SELF, prod_decrease_1, [
     STORE_PERM(max(LOAD_PERM(0x02)-1, 4), 0x02)]) {
     do_production_change;
 }
 
+/*
 switch (FEAT_INDUSTRIES, SELF, new_prod_change_great, getbits(extra_callback_info2, 4, 4)) {
     0..3 : prod_increase_3;
     4..7 : prod_increase_2;
@@ -87,6 +95,7 @@ switch (FEAT_INDUSTRIES, SELF, new_prod_change_poor, getbits(extra_callback_info
     12..15 : prod_decrease_1;
     return CB_FAILED;
 }
+*/
 
 // jrook 20190727
 // 5/16 chance increase 1, 1/16 decrease 1
