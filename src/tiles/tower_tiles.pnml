@@ -9,9 +9,11 @@ spriteset (tower_building) {
 	[0, 0, 50, 83, -25, -55, NOANIM, "src/gfx/tower_sprite.png"]
 }
 
+/*
 spriteset (pavilion_building) {
 	[0, 0, 54, 81, -27, -53, NOANIM, "src/gfx/pavilion_sprite.png"]
 }
+*/
 
 spriteset (mayan_ruins_building) {
 	[0, 0, 60, 41, -29, -8, NOANIM, "src/gfx/mayan_ruins_sprite.png"]
@@ -33,9 +35,11 @@ spriteset (pyramid_tan_building) {
 	[0, 0, 60, 46, -30, -11, NOANIM, "src/gfx/pyramid_tan_sprite.png"]
 }
 
+/*
 spriteset (monument_building) {
 	[0, 0, 30, 48, -15, -21, NOANIM, "src/gfx/monument_sprite.png"]
 }
+*/
 
 /*
 spriteset (wickerman_building) {
@@ -91,8 +95,10 @@ spritelayout jrpyramid_tan_tile_N_spritelayout { // pyramid, tan
 }
 
 spritelayout jrmonument_tile_N_spritelayout { // monument
-	ground { sprite: GROUNDSPRITE_NORMAL; }
-	building { sprite: monument_building; }
+	//ground { sprite: GROUNDSPRITE_NORMAL; }
+	//building { sprite: monument_building; }
+	ground { sprite: GROUNDSPRITE_CONCRETE; }
+	building { sprite: 1454; xoffset: 6; yoffset: 5; }
 }
 
 /*
@@ -128,9 +134,9 @@ random_switch (FEAT_INDUSTRYTILES, SELF, tower_chooser) {
 
 random_switch (FEAT_INDUSTRYTILES, SELF, lodge_chooser) {
 	15: return jrlodge_tile_N_spritelayout;
-	1: return jrtower_tile_N_spritelayout;
-	1: return jrpavilion_tile_N_spritelayout;
-	1: return jrmonument_tile_N_spritelayout;
+	3: return jrtower_tile_N_spritelayout;
+	3: return jrpavilion_tile_N_spritelayout;
+	3: return jrmonument_tile_N_spritelayout;
 }
 
 random_switch (FEAT_INDUSTRYTILES, SELF, mayan_chooser) {
@@ -158,14 +164,12 @@ random_switch (FEAT_INDUSTRYTILES, SELF, lighthouse_chooser) {
 	//1: return jrwickerman_tile_N_spritelayout;
 }
 
-//switch (FEAT_INDUSTRYTILES, SELF, tower_get_spritelayout_5, ( town_zone == 0 && nearby_tile_class(2, 0) == TILE_CLASS_TREES && nearby_tile_class(-2, 0) == TILE_CLASS_TREES && nearby_tile_class(0, 2) == TILE_CLASS_TREES && nearby_tile_class(0, -2) == TILE_CLASS_TREES ) ) {
-switch (FEAT_INDUSTRYTILES, SELF, tower_get_spritelayout_5, ( town_zone == 0 && nearby_tile_class(2, 0) == TILE_CLASS_TREES && nearby_tile_class(-2, 0) == TILE_CLASS_TREES && nearby_tile_class(0, 2) == TILE_CLASS_TREES && nearby_tile_class(0, -2) == TILE_CLASS_TREES ) ) {
+switch (FEAT_INDUSTRYTILES, SELF, tower_get_spritelayout_5, ( town_zone == 0 && climate != CLIMATE_TROPIC && (nearby_tile_class(-2, 0) == TILE_CLASS_TREES || nearby_tile_class(0, 2) == TILE_CLASS_TREES || nearby_tile_class(2, 0) == TILE_CLASS_TREES || nearby_tile_class(0, -2) == TILE_CLASS_TREES) ) ) {
 	0: tower_chooser; // not sea, desert, or forest, so choose something else
 	1: lodge_chooser; // chain to a random_switch here, weighted for the lodge but including others
 }
 
-//switch (FEAT_INDUSTRYTILES, SELF, tower_get_spritelayout_4, ( town_zone == 0 && climate == CLIMATE_TROPIC && nearby_tile_class(2, 0) == TILE_CLASS_TREES && nearby_tile_class(-2, 0) == TILE_CLASS_TREES && nearby_tile_class(0, 2) == TILE_CLASS_TREES && nearby_tile_class(0, -2) == TILE_CLASS_TREES ) ) {
-switch (FEAT_INDUSTRYTILES, SELF, tower_get_spritelayout_4, ( town_zone == 0 && climate == CLIMATE_TROPIC && nearby_tile_class(2, 0) == TILE_CLASS_TREES && nearby_tile_class(-2, 0) == TILE_CLASS_TREES && nearby_tile_class(0, 2) == TILE_CLASS_TREES && nearby_tile_class(0, -2) == TILE_CLASS_TREES ) ) {
+switch (FEAT_INDUSTRYTILES, SELF, tower_get_spritelayout_4, ( town_zone == 0 && climate == CLIMATE_TROPIC && (nearby_tile_class(-2, 0) == TILE_CLASS_TREES || nearby_tile_class(0, 2) == TILE_CLASS_TREES || nearby_tile_class(2, 0) == TILE_CLASS_TREES || nearby_tile_class(0, -2) == TILE_CLASS_TREES) ) ) {
 	0: tower_get_spritelayout_5; // temperate/arctic tree check
 	1: mayan_chooser;
 }
@@ -180,10 +184,12 @@ switch (FEAT_INDUSTRYTILES, SELF, tower_get_spritelayout_2, ( nearby_tile_water_
 	1: lighthouse_chooser; // chain to a random_switch here, weighted for the lighthouse but including others
 }
 
+/*
 switch (FEAT_INDUSTRYTILES, SELF, tower_get_spritelayout_1, nearby_tile_slope(0, 0)) {
 	SLOPE_FLAT: tower_get_spritelayout_2; // flat tile, so continue
 	1..255: return string(STR_TILE_FLAT_CHECK_FAILED);
 }
+*/
 
 item (FEAT_INDUSTRYTILES, jrtower_tile_N, 4) {
 	property {
@@ -191,7 +197,10 @@ item (FEAT_INDUSTRYTILES, jrtower_tile_N, 4) {
 		accepted_cargos: [[TOUR, 8]];
 	}
 	graphics {
-		tower_get_spritelayout_1;
+		default: tower_get_spritelayout_2;
+		tile_check: return CB_RESULT_LOCATION_ALLOW;
+		foundations: return CB_RESULT_FOUNDATIONS;
+		autoslope: return CB_RESULT_AUTOSLOPE;
 	}
 }
 
