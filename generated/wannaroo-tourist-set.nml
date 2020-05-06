@@ -368,9 +368,9 @@ if (param_enable_hotel || param_enable_tower || param_enable_town_square || para
 
 */
 
-produce(tourist_industry_cargo_arrival, [STORE_PERM(LOAD_PERM(0x06)+waiting_cargo_1, 0x06), STORE_PERM(1, 0x0F), waiting_cargo_1], waiting_cargo_2, waiting_cargo_3, 0, 0, 0);
+produce(tourist_industry_cargo_arrival, [STORE_PERM(LOAD_PERM(0x06)+waiting_cargo_1, 0x06), STORE_PERM(1, 0x0F), waiting_cargo_1], waiting_cargo_2, waiting_cargo_3, waiting_cargo_1/4, 0, 0);
 
-produce(produce_1_cargo, 0, 0, 0, LOAD_PERM(0x02), 0, 0);
+produce(produce_1_cargo, 0, 0, 0, LOAD_PERM(0x02)+extra_callback_info1%4, 0, 0);
 
 /* on a production change, close after the closure protection period has passed without a cargo pickup */
 switch (FEAT_INDUSTRIES, SELF, do_production_change, (param_closure_protect_time>0 && LOAD_PERM(0x00)>param_closure_protect_time) ) {
@@ -378,6 +378,7 @@ switch (FEAT_INDUSTRIES, SELF, do_production_change, (param_closure_protect_time
     return CB_RESULT_IND_PROD_NO_CHANGE;
 }
 
+/*
 switch (FEAT_INDUSTRIES, SELF, prod_increase_3, [
     STORE_PERM(min(LOAD_PERM(0x02)+3, param_max_tour_prod/8), 0x02)]) {
     do_production_change;
@@ -386,6 +387,8 @@ switch (FEAT_INDUSTRIES, SELF, prod_increase_2, [
     STORE_PERM(min(LOAD_PERM(0x02)+2, param_max_tour_prod/8), 0x02)]) {
     do_production_change;
 }
+*/
+
 switch (FEAT_INDUSTRIES, SELF, prod_increase_1, [
     STORE_PERM(min(LOAD_PERM(0x02)+1, param_max_tour_prod/8), 0x02)]) {
     do_production_change;
@@ -393,6 +396,8 @@ switch (FEAT_INDUSTRIES, SELF, prod_increase_1, [
 
 // jrook 20190727
 // lowest prod rate shall be 4
+
+/*
 switch (FEAT_INDUSTRIES, SELF, prod_decrease_3, [
     STORE_PERM(max(LOAD_PERM(0x02)-3, 4), 0x02)]) {
     do_production_change;
@@ -401,11 +406,14 @@ switch (FEAT_INDUSTRIES, SELF, prod_decrease_2, [
     STORE_PERM(max(LOAD_PERM(0x02)-2, 4), 0x02)]) {
     do_production_change;
 }
+*/
+
 switch (FEAT_INDUSTRIES, SELF, prod_decrease_1, [
     STORE_PERM(max(LOAD_PERM(0x02)-1, 4), 0x02)]) {
     do_production_change;
 }
 
+/*
 switch (FEAT_INDUSTRIES, SELF, new_prod_change_great, getbits(extra_callback_info2, 4, 4)) {
     0..3 : prod_increase_3;
     4..7 : prod_increase_2;
@@ -435,6 +443,7 @@ switch (FEAT_INDUSTRIES, SELF, new_prod_change_poor, getbits(extra_callback_info
     12..15 : prod_decrease_1;
     return CB_FAILED;
 }
+*/
 
 // jrook 20190727
 // 5/16 chance increase 1, 1/16 decrease 1
@@ -1892,6 +1901,7 @@ if (param_enable_hotel) {
    substitute: INDUSTRYTYPE_POWER_PLANT;
    layouts: [jrhotel_tilelayout1];
    life_type: IND_LIFE_TYPE_BLACK_HOLE;
+   spec_flags: bitmask(IND_FLAG_RANDOM_BITS_IN_PRODUCTION_CALLBACK);
    // costs from FIRS 3 hotel
    fund_cost_multiplier: 101;
    remove_cost_multiplier: 0;
@@ -1936,9 +1946,11 @@ spriteset (tower_building) {
  [0, 0, 50, 83, -25, -55, NOANIM, "src/gfx/tower_sprite.png"]
 }
 
+/*
 spriteset (pavilion_building) {
- [0, 0, 54, 81, -27, -53, NOANIM, "src/gfx/pavilion_sprite.png"]
+	[0, 0, 54, 81, -27, -53, NOANIM, "src/gfx/pavilion_sprite.png"]
 }
+*/
 
 spriteset (mayan_ruins_building) {
  [0, 0, 60, 41, -29, -8, NOANIM, "src/gfx/mayan_ruins_sprite.png"]
@@ -1960,9 +1972,11 @@ spriteset (pyramid_tan_building) {
  [0, 0, 60, 46, -30, -11, NOANIM, "src/gfx/pyramid_tan_sprite.png"]
 }
 
+/*
 spriteset (monument_building) {
- [0, 0, 30, 48, -15, -21, NOANIM, "src/gfx/monument_sprite.png"]
+	[0, 0, 30, 48, -15, -21, NOANIM, "src/gfx/monument_sprite.png"]
 }
+*/
 
 /*
 spriteset (wickerman_building) {
@@ -1978,8 +1992,8 @@ spritelayout jrtower_tile_N_spritelayout { // tower
 
 spritelayout jrpavilion_tile_N_spritelayout { // pavilion
  ground { sprite: GROUNDSPRITE_CONCRETE; }
- //building { sprite: 4638; }
- building { sprite: pavilion_building; }
+ building { sprite: 4638; }
+ //building { sprite: pavilion_building; }
 }
 
 spritelayout jrlodge_tile_N_spritelayout { // lodge
@@ -2018,8 +2032,10 @@ spritelayout jrpyramid_tan_tile_N_spritelayout { // pyramid, tan
 }
 
 spritelayout jrmonument_tile_N_spritelayout { // monument
- ground { sprite: GROUNDSPRITE_NORMAL; }
- building { sprite: monument_building; }
+ //ground { sprite: GROUNDSPRITE_NORMAL; }
+ //building { sprite: monument_building; }
+ ground { sprite: GROUNDSPRITE_CONCRETE; }
+ building { sprite: 1454; xoffset: 6; yoffset: 5; }
 }
 
 /*
@@ -2055,9 +2071,9 @@ random_switch (FEAT_INDUSTRYTILES, SELF, tower_chooser) {
 
 random_switch (FEAT_INDUSTRYTILES, SELF, lodge_chooser) {
  15: return jrlodge_tile_N_spritelayout;
- 1: return jrtower_tile_N_spritelayout;
- 1: return jrpavilion_tile_N_spritelayout;
- 1: return jrmonument_tile_N_spritelayout;
+ 3: return jrtower_tile_N_spritelayout;
+ 3: return jrpavilion_tile_N_spritelayout;
+ 3: return jrmonument_tile_N_spritelayout;
 }
 
 random_switch (FEAT_INDUSTRYTILES, SELF, mayan_chooser) {
@@ -2085,14 +2101,12 @@ random_switch (FEAT_INDUSTRYTILES, SELF, lighthouse_chooser) {
  //1: return jrwickerman_tile_N_spritelayout;
 }
 
-//switch (FEAT_INDUSTRYTILES, SELF, tower_get_spritelayout_5, ( town_zone == 0 && nearby_tile_class(2, 0) == TILE_CLASS_TREES && nearby_tile_class(-2, 0) == TILE_CLASS_TREES && nearby_tile_class(0, 2) == TILE_CLASS_TREES && nearby_tile_class(0, -2) == TILE_CLASS_TREES ) ) {
-switch (FEAT_INDUSTRYTILES, SELF, tower_get_spritelayout_5, ( town_zone == 0 && nearby_tile_class(2, 0) == TILE_CLASS_TREES && nearby_tile_class(-2, 0) == TILE_CLASS_TREES && nearby_tile_class(0, 2) == TILE_CLASS_TREES && nearby_tile_class(0, -2) == TILE_CLASS_TREES ) ) {
+switch (FEAT_INDUSTRYTILES, SELF, tower_get_spritelayout_5, ( town_zone == 0 && climate != CLIMATE_TROPIC && (nearby_tile_class(-2, 0) == TILE_CLASS_TREES || nearby_tile_class(0, 2) == TILE_CLASS_TREES || nearby_tile_class(2, 0) == TILE_CLASS_TREES || nearby_tile_class(0, -2) == TILE_CLASS_TREES) ) ) {
  0: tower_chooser; // not sea, desert, or forest, so choose something else
  1: lodge_chooser; // chain to a random_switch here, weighted for the lodge but including others
 }
 
-//switch (FEAT_INDUSTRYTILES, SELF, tower_get_spritelayout_4, ( town_zone == 0 && climate == CLIMATE_TROPIC && nearby_tile_class(2, 0) == TILE_CLASS_TREES && nearby_tile_class(-2, 0) == TILE_CLASS_TREES && nearby_tile_class(0, 2) == TILE_CLASS_TREES && nearby_tile_class(0, -2) == TILE_CLASS_TREES ) ) {
-switch (FEAT_INDUSTRYTILES, SELF, tower_get_spritelayout_4, ( town_zone == 0 && climate == CLIMATE_TROPIC && nearby_tile_class(2, 0) == TILE_CLASS_TREES && nearby_tile_class(-2, 0) == TILE_CLASS_TREES && nearby_tile_class(0, 2) == TILE_CLASS_TREES && nearby_tile_class(0, -2) == TILE_CLASS_TREES ) ) {
+switch (FEAT_INDUSTRYTILES, SELF, tower_get_spritelayout_4, ( town_zone == 0 && climate == CLIMATE_TROPIC && (nearby_tile_class(-2, 0) == TILE_CLASS_TREES || nearby_tile_class(0, 2) == TILE_CLASS_TREES || nearby_tile_class(2, 0) == TILE_CLASS_TREES || nearby_tile_class(0, -2) == TILE_CLASS_TREES) ) ) {
  0: tower_get_spritelayout_5; // temperate/arctic tree check
  1: mayan_chooser;
 }
@@ -2107,10 +2121,12 @@ switch (FEAT_INDUSTRYTILES, SELF, tower_get_spritelayout_2, ( nearby_tile_water_
  1: lighthouse_chooser; // chain to a random_switch here, weighted for the lighthouse but including others
 }
 
+/*
 switch (FEAT_INDUSTRYTILES, SELF, tower_get_spritelayout_1, nearby_tile_slope(0, 0)) {
- SLOPE_FLAT: tower_get_spritelayout_2; // flat tile, so continue
- 1..255: return string(STR_TILE_FLAT_CHECK_FAILED);
+	SLOPE_FLAT: tower_get_spritelayout_2; // flat tile, so continue
+	1..255: return string(STR_TILE_FLAT_CHECK_FAILED);
 }
+*/
 
 item (FEAT_INDUSTRYTILES, jrtower_tile_N, 4) {
  property {
@@ -2118,7 +2134,10 @@ item (FEAT_INDUSTRYTILES, jrtower_tile_N, 4) {
   accepted_cargos: [[TOUR, 8]];
  }
  graphics {
-  tower_get_spritelayout_1;
+  default: tower_get_spritelayout_2;
+  tile_check: return CB_RESULT_LOCATION_ALLOW;
+  foundations: return CB_RESULT_FOUNDATIONS;
+  autoslope: return CB_RESULT_AUTOSLOPE;
  }
 }
 # 17 "wannaroo-tourist-set.pnml" 2
@@ -2160,6 +2179,7 @@ if (param_enable_tower) {
    substitute: INDUSTRYTYPE_POWER_PLANT;
    layouts: [jrtower_tilelayout1];
    life_type: IND_LIFE_TYPE_BLACK_HOLE;
+   spec_flags: bitmask(IND_FLAG_RANDOM_BITS_IN_PRODUCTION_CALLBACK);
    // costs from FIRS 3 hotel
    fund_cost_multiplier: 101;
    remove_cost_multiplier: 0;
@@ -2320,6 +2340,7 @@ if (param_enable_town_square) {
    substitute: INDUSTRYTYPE_POWER_PLANT;
    layouts: [jrtownsquare_tilelayout1];
    life_type: IND_LIFE_TYPE_BLACK_HOLE;
+   spec_flags: bitmask(IND_FLAG_RANDOM_BITS_IN_PRODUCTION_CALLBACK);
    // costs from FIRS 3 hotel
    fund_cost_multiplier: 101;
    remove_cost_multiplier: 0;
