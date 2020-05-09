@@ -30,7 +30,7 @@ if (TOWN_SQUARE_ENABLED) {
 			substitute:		INDUSTRYTYPE_POWER_PLANT;
 			layouts:		[jrtownsquare_tilelayout1];
 			life_type:		IND_LIFE_TYPE_BLACK_HOLE;
-			spec_flags:     bitmask(IND_FLAG_RANDOM_BITS_IN_PRODUCTION_CALLBACK);
+			spec_flags:     bitmask(IND_FLAG_ONLY_IN_TOWNS, IND_FLAG_RANDOM_BITS_IN_PRODUCTION_CALLBACK);
 			// costs from FIRS 3 hotel
 			fund_cost_multiplier:	101;
 			remove_cost_multiplier:	0;
@@ -46,7 +46,6 @@ if (TOWN_SQUARE_ENABLED) {
 			prob_in_game:		param_manual_placement ? 0 : 2;
 			prospect_chance:	1.0;
 			map_colour:		37;
-			spec_flags:		bitmask(IND_FLAG_ONLY_IN_TOWNS);
 			name:			string(STR_TOWN_SQUARE_NAME);
 			nearby_station_name:	string(STR_TOWN_SQUARE_STATION_NAME);
 		}
