@@ -30,8 +30,7 @@ NewGRF for OpenTTD - Tourist industries
             * Flats: ![Flats](src/gfx/flats.png)
         * max 1 each per town
 
-    * Parameters
-        * Hopefully are self-explanatory
+    * Parameters: hopefully are self-explanatory
 
 1. Development
 
