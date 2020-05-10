@@ -36,6 +36,8 @@ NewGRF for OpenTTD - Tourist industries
 1. Development
 
     The usual pnml/nml files with C includes and macros. I built this newgrf on Linux Mint 19.3 using gcc version 7.5.0, NML version 0.4.5.
+    
+    Translations gladly accepted. Please open an issue on GitHub (https://github.com/jrook1445/wannaroo-tourist-set) and attach your lang file so I can include it in a release.
 
 1. License
 
