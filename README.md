@@ -23,13 +23,16 @@ NewGRF for OpenTTD - Tourist industries
 
     * 4 houses:
         * 2 houses (rustic, regular) produce 8 +/- 3 tourists per production tick
-            * Rustic House: ![Rustic House](src/gfx/rustic_house.png)
-            * Regular House: ![Regular House](src/gfx/regular_house.png)
+            * Rustic House: available from 1890 ![Rustic House](src/gfx/rustic_house.png)
+            * Regular House: available from 1920 ![Regular House](src/gfx/regular_house.png)
+            * 1 each per town; max 2 each per town >= 4800
         * 2 tall buildings (tower block, flats) produce 20 +/- 4 tourists per production tick
-            * Tower Block: ![Tower Block](src/gfx/tower_block.png)
-            * Flats: ![Flats](src/gfx/flats.png)
-        * max 1 each per town
+            * Flats: available from 1940 ![Flats](src/gfx/flats.png)
+            * Tower Block: available from 1970 ![Tower Block](src/gfx/tower_block.png)
+            * 1 each per town >= 1200; max 2 each per town >= 8000
 
+    * Concrete base tiles display an orange star :star: so the houses are easier to find in transparent/invisible mode.
+    
     * Parameters: hopefully are self-explanatory
 
 1. Development
