@@ -33,7 +33,7 @@ grf {
  grfid: "jdr\02";
  name: string(STR_GRF_NAME);
  desc: string(STR_GRF_DESCRIPTION);
- version: 10;
+ version: 1100;
  min_compatible_version: 10;
     url: string(STR_GRF_URL);
 
@@ -2381,24 +2381,33 @@ if (param_enable_town_square) {
     https://github.com/jrook1445/wannaroo-tourist-set
 */
 
+spriteset (tour_concrete_base) {
+    //[674, 1912, 64, 31, -31, 0, NOANIM, "src/gfx/industries_misc.png"]
+    [0, 0, 64, 31, -31, 0, NOANIM, "src/gfx/tour_concrete_base.png"]
+}
+
 spritelayout cabin_layout {
-    ground { sprite: GROUNDSPRITE_CONCRETE; }
+    //ground { sprite: GROUNDSPRITE_CONCRETE; }
+    ground { sprite: tour_concrete_base; }
     building { sprite: 4635; }
 }
 
 spritelayout regular_house_layout {
-    ground { sprite: GROUNDSPRITE_CONCRETE; }
+    //ground { sprite: GROUNDSPRITE_CONCRETE; }
+    ground { sprite: tour_concrete_base; }
     //building { sprite: 4647; recolour_mode: RECOLOUR_REMAP; palette: PALETTE_USE_DEFAULT; }
     building { sprite: 4641; recolour_mode: RECOLOUR_REMAP; palette: PALETTE_USE_DEFAULT; }
 }
 
 spritelayout tower_block_layout {
-    ground { sprite: GROUNDSPRITE_CONCRETE; }
+    //ground { sprite: GROUNDSPRITE_CONCRETE; }
+    ground { sprite: tour_concrete_base; }
     building { sprite: 4650; }
 }
 
 spritelayout flats_layout {
-    ground { sprite: GROUNDSPRITE_CONCRETE; }
+    //ground { sprite: GROUNDSPRITE_CONCRETE; }
+    ground { sprite: tour_concrete_base; }
     building { sprite: 4659; }
 }
 
@@ -2407,18 +2416,37 @@ switch (FEAT_HOUSES, SELF, check_tour_house_distance, nearest_house_matching_cri
     return 0;
 }
 
-switch (FEAT_HOUSES, PARENT, check_town_population, population) {
+switch (FEAT_HOUSES, PARENT, check_town_population_32000, population) {
+    0..31999: return 0;
+    return check_tour_house_distance;
+}
+
+switch (FEAT_HOUSES, PARENT, check_town_population_8000, population) {
+    0..7999: return 0;
+    return check_tour_house_distance;
+}
+
+switch (FEAT_HOUSES, PARENT, check_town_population_4800, population) {
+    0..4799: return 0;
+    return check_tour_house_distance;
+}
+
+switch (FEAT_HOUSES, PARENT, check_town_population_1200, population) {
     0..1199: return 0;
     return check_tour_house_distance;
 }
 
 switch (FEAT_HOUSES, SELF, check_tower_count, same_house_count_town) {
-    0: check_town_population;
+    0: check_town_population_1200;
+    1: check_town_population_8000;
+    2: check_town_population_32000;
     return 0;
 }
 
 switch (FEAT_HOUSES, SELF, check_house_count, same_house_count_town) {
     0: check_tour_house_distance;
+    1: check_town_population_4800;
+    2: check_town_population_8000;
     return 0;
 }
 
@@ -2443,14 +2471,15 @@ item (FEAT_HOUSES, house_cabin, 0) {
         mail_multiplier: 6;
         accepted_cargos: [[PASS, 3], [MAIL, 1], [TOUR, 8]];
         probability: 1;
-        years_available: [1930, 65535];
+        years_available: [1890, 65535];
         minimum_lifetime: 255;
         availability_mask: [bitmask(TOWNZONE_OUTER_SUBURB, TOWNZONE_OUTSKIRT, TOWNZONE_EDGE), ALL_CLIMATES];
         building_class: 0;
     }
     graphics {
         default: cabin_layout;
-        autoslope: CB_RESULT_AUTOSLOPE;
+        foundations: return CB_RESULT_FOUNDATIONS;
+        autoslope: return CB_RESULT_AUTOSLOPE;
         construction_check: check_house_count;
         destruction: 0;
         protection: 1;
@@ -2467,7 +2496,7 @@ item (FEAT_HOUSES, house_regular_house, 1) {
         mail_multiplier: 6;
         accepted_cargos: [[PASS, 3], [MAIL, 1], [TOUR, 8]];
         probability: 1;
-        years_available: [1930, 65535];
+        years_available: [1920, 65535];
         minimum_lifetime: 255;
         availability_mask: [bitmask(TOWNZONE_OUTER_SUBURB, TOWNZONE_OUTSKIRT, TOWNZONE_EDGE), ALL_CLIMATES];
         building_class: 0;
@@ -2475,7 +2504,8 @@ item (FEAT_HOUSES, house_regular_house, 1) {
     }
     graphics {
         default: regular_house_layout;
-        autoslope: CB_RESULT_AUTOSLOPE;
+        foundations: return CB_RESULT_FOUNDATIONS;
+        autoslope: return CB_RESULT_AUTOSLOPE;
         construction_check: check_house_count;
         destruction: 0;
         protection: 1;
@@ -2493,14 +2523,15 @@ item (FEAT_HOUSES, house_tower_block, 2) {
         //accepted_cargos:    [[PASS, 6], [MAIL, 2], [GOOD, 3], [FOOD, 3], [TOUR, 8]];
         accepted_cargos: [[PASS, 6], [MAIL, 2], [TOUR, 8]];
         probability: 1;
-        years_available: [1930, 65535];
+        years_available: [1970, 65535];
         minimum_lifetime: 255;
         availability_mask: [bitmask(TOWNZONE_CENTRE, TOWNZONE_INNER_SUBURB, TOWNZONE_OUTER_SUBURB, TOWNZONE_OUTSKIRT), ALL_CLIMATES];
         building_class: 0;
     }
     graphics {
         default: tower_block_layout;
-        autoslope: CB_RESULT_AUTOSLOPE;
+        foundations: return CB_RESULT_FOUNDATIONS;
+        autoslope: return CB_RESULT_AUTOSLOPE;
         construction_check: check_tower_count;
         destruction: 0;
         protection: 1;
@@ -2518,14 +2549,15 @@ item (FEAT_HOUSES, house_flats, 3) {
         //accepted_cargos:    [[PASS, 6], [MAIL, 2], [GOOD, 3], [FOOD, 3], [TOUR, 8]];
         accepted_cargos: [[PASS, 6], [MAIL, 2], [TOUR, 8]];
         probability: 1;
-        years_available: [1930, 65535];
+        years_available: [1940, 65535];
         minimum_lifetime: 255;
         availability_mask: [bitmask(TOWNZONE_CENTRE, TOWNZONE_INNER_SUBURB, TOWNZONE_OUTER_SUBURB, TOWNZONE_OUTSKIRT), ALL_CLIMATES];
         building_class: 0;
     }
     graphics {
         default: flats_layout;
-        autoslope: CB_RESULT_AUTOSLOPE;
+        foundations: return CB_RESULT_FOUNDATIONS;
+        autoslope: return CB_RESULT_AUTOSLOPE;
         construction_check: check_tower_count;
         destruction: 0;
         protection: 1;

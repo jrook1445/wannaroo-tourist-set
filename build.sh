@@ -15,7 +15,11 @@ then
     tar cvf wannaroo-tourist-set.tar wannaroo-tourist-set
     cp -i wannaroo-tourist-set.tar $HOME/.openttd/newgrf
     #cp -i wannaroo-tourist-set.grf $HOME/.openttd/newgrf
+    echo -e "\e[92m*** build successful ***"
 else
-    echo "nmlc could not build newgrf"
+    echo -e "\e[91m*** nmlc could not build newgrf ***"
 fi
+echo "NML info:"
+echo "---------------"
+$NMLC --version
 

@@ -1,11 +1,13 @@
 Wannaroo Tourist Set
 
-1.1 - 2020-05-10
+1.1.0 - 2020-05-12
 -----------------------------------------------------------
 Update README.md
 fix animated pixels on a few sprites
-Tower/Visitor Center - tweaks
-Produce_256 blocks - add extra_callback_info1 to vary output
+produce_256 blocks - add extra_callback_info1 to vary output
+Visitor Center - tweaks
+Houses - tweak intro dates, max 3 each per town, add autoslope,
+    add orange star to concrete base tiles for visibility
 
 1.0 - 2020-04-17
 -----------------------------------------------------------
